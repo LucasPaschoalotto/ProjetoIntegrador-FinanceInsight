@@ -4,7 +4,7 @@ const route = Router();
 
 //Rota inicial do projeto ao subir o servidor
 route.get("/", (req, res) => {
-    res.send("Financial Insight");
+    res.sendFile("index.html", {root: './src'});
 });
 
 export default route;
