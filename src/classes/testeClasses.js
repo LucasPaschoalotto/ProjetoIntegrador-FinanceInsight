@@ -1,5 +1,5 @@
-import Conta from "./classes/Conta.js";
-import Usuario from "./classes/Usuario.js";
+import Conta from "./Conta.js";
+import Usuario from "./Usuario.js";
 
 const novoUsuario = new Usuario("Lucas", "lucas@email.com", 12345);
 console.log("USUARIO");
