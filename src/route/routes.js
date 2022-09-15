@@ -10,12 +10,17 @@ rota.get("/", (req, res) => {
 });
 
 //ROTA CREATE USUARIO
-rota.post("/usuario", controllerRoutes.criarUsuario);
+rota.post("/users", async (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+    const uuid = await controllerRoutes.createUser(username, password);
+    res.status(200).send(uuid);
+});
 
 //ROTA READ ALL USERS
-rota.get("/usuario", async (req, res) => {
-    const usuarios = await controllerRoutes.findAllUsers();
-    res.status(200).send(usuarios);
+rota.get("/users", async (req, res) => {
+    const users = await controllerRoutes.findAllUsers();
+    res.status(200).send(users);
 });
 
 //ROTA UPDATE
