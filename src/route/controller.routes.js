@@ -3,13 +3,13 @@ import dataBase from "../database/db.js";
 class RouteController{
     //Método para criar usuário
     async createUser(username, password){
-        const createUserScript = `
+        const createUser = `
         INSERT INTO application_users (username, password)
         VALUES ($1, $2)
         `;
         
         const createUserValues = [username, password];
-        const {rows} = await dataBase.query(createUserScript, createUserValues);
+        const {rows} = await dataBase.query(createUser, createUserValues);
         const [newUser] = rows;
     
         return newUser;
@@ -26,51 +26,48 @@ class RouteController{
         
         return rows || [];
     }
-    /*
-    //Método para lstar usuário pelo ID
-    async findById(uuid: string): Promise<User> {
+
+    //Método para lstar usuário pelo Nome
+    async findByName(username){
         try{
-            const queryId = `SELECT uuid, username
+            const findUserName = `SELECT uuid, username
             FROM application_users
-            WHERE uuid = $1
+            WHERE username = $1
             `;
-            const valueId = [uuid];
-    
-            const {rows} = await db.query<User>(queryId, valueId);
+            const findUserNameValues = [username];
+            
+            const {rows} = await dataBase.query(findUserName, findUserNameValues);
             const [user] = rows;
-    
+            
             return user;
         } catch(error){
-            throw new DatabaseError("Erro na consulta por ID", error);
-
+            throw new Error("Erro na consulta por Nome");
         }
     }
-
+    
     //Método para atualizar usuário
-    async updateUser(user: User): Promise<void> {
-        const updateScript = `
+    async updateUser(username, newUsername) {
+        const updateUserName = `
         UPDATE application_users
-        SET username = $1, password = crypt($2, '${authenticationCryptKey}')
-        WHERE uuid = $3
-        RETURNING 
+        SET username = $1
+        WHERE username = $2
         `;
-        const updateValues = [user.username, user.password, user.uuid];
+        const updateUserNameValues = [newUsername, username];
         
-        await db.query(updateScript, updateValues);
+        await dataBase.query(updateUserName, updateUserNameValues);
     }
-
+    
     //Método para deletar usuário
-    async removeUser(uuid: string): Promise<void>{
-        const removeScript = `
+    async deleteUser(username){
+        const deleteUser = `
         DELETE
         FROM application_users
-        WHERE uuid = $1
+        WHERE username = $1
         `;
-        const removeValues = [uuid];
+        const deleteUserValues = [username];
 
-        await db.query(removeScript, removeValues);
+        await dataBase.query(deleteUser, deleteUserValues);
     }
-*/
 }
 
 export default new RouteController();
