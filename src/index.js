@@ -1,5 +1,5 @@
 import express from "express";
-import route from "./routes.js";
+import rota from "./route/routes.js";
 
 const server = express();
 
@@ -8,9 +8,6 @@ server.use(express.json());
 server.use(express.urlencoded({extended: true}));
 
 //Configuração de rotas
-server.use(route);
+server.use(rota);
 
-//Inicializando o servidor na rota 5000
-server.listen(5000, () => {
-    console.log("Executando aplicação na porta 5000\nhttp://localhost:5000");
-});
+export default server;
