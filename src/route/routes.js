@@ -3,7 +3,6 @@ import controllerRoutes from "./controller.routes.js";
 
 const rota = Router()
 
-
 //Rota inicial do projeto ao subir o servidor
 rota.get("/", (req, res) => {
     res.sendFile("index.html", {root: './src'});

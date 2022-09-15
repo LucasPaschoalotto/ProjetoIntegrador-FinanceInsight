@@ -1,13 +1,10 @@
-import express from "express";
-import rota from "./route/routes.js";
+import fetch from "node-fetch";
 
-const server = express();
+function getDetails(url) {
+    return fetch(url).then(response => response.json());
+}
 
-//Configuração da aplicação
-server.use(express.json());
-server.use(express.urlencoded({extended: true}));
-
-//Configuração de rotas
-server.use(rota);
-
-export default server;
+var u = "http://localhost:5000/users/getAllUsers";
+getDetails(u).then(function(data) {
+    console.log(data);
+})

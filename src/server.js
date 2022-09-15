@@ -1,4 +1,4 @@
-import server from "./index.js";
+import server from "./app.js";
 
 const porta = 5000;
 
