@@ -15,12 +15,12 @@ console.log("nome " + novoUsuario.nome);
 console.log("email " + novoUsuario.email);
 console.log("cpf " + novoUsuario.cpf);
 
-const novaConta = new Conta(15, 1, "Lucas");
+const novaConta = new Conta(15, 1, "Lucas", "lucas@email.com", 11122233345);
 console.log("\n\nCONTA");
 //teste Getter
 console.log("numero " + novaConta.numero);
 console.log("saldo " + novaConta.saldo);
-console.log("usuario " + novaConta.usuario);
+console.log("usuario nome, email e cpf " + novaConta.usuario.nome + " " + novaConta.usuario.email + " " + novaConta.usuario.cpf);
 //teste Setter
 novaConta.numero = 11;
 novaConta.saldo = 0;

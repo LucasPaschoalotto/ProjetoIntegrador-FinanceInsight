@@ -5,7 +5,10 @@ const rota = Router()
 
 //Rota inicial do projeto ao subir o servidor
 rota.get("/", (req, res) => {
-    res.sendFile("index.html", {root: './src'});
+    res.sendFile("index.html", {root: './src/public'});
+});
+rota.get("/index.js", (req, res) => {
+    res.sendFile("index.js", {root: './src/public'});
 });
 
 //ROTA CREATE USUARIO
