@@ -1,29 +1,49 @@
 
 const buttonGetUsers = document.getElementById("getUsers");
+const buttonCreateUser = document.getElementById("createUser")
 
-buttonGetUsers.addEventListener("click", async (infos) => {
+buttonGetUsers.addEventListener("click", async (info) => {
+    info.preventDefault();
+
     let nome;
-    infos.preventDefault();
     await fetch("/users/getAllUsers",{
         method: "GET"
-    })
+        })
         .then(response => response.json())          
         .then(json => {
             nome = json;
             console.log(nome);
-        })
+    });
+       
+    const listaDeUsuarios = document.querySelector(".listaDeUsuarios");
+    for(var i = 0; i < nome.length; i++){
+        console.log(nome[i])
+        console.log(nome[i].username);
+        listaDeUsuarios.insertAdjacentHTML("afterbegin", `<li>${nome[i].username}</li>`);
+    };
+});
 
-        
-        const listaDeUsuarios = document.querySelector(".listaDeUsuarios");
-        for(var i = 0; i < nome.length; i++){
-            console.log(nome[i])
-            console.log(nome[i].username);
-            listaDeUsuarios.insertAdjacentHTML("afterbegin", `<li>${nome[i].username}</li>`);
-        }
-        
+buttonCreateUser.addEventListener("click", async(info) => {
+    info.preventDefault();
 
 
-}
+    const a = "testeFrontVar";
+    const b = "testeFrontPass"
+
+    console.log("ok");
+    const rawResponse = await fetch('/users', {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: a, password: b})
+    });
+    const content = await rawResponse.json();
+    
+    console.log(content);
+});
+    
 
     /*const getRoute = '/users/getAllUsers';
 
@@ -38,7 +58,6 @@ buttonGetUsers.addEventListener("click", async (infos) => {
     .then(data => {
         console.log(data)
     })*/
-);
 
 
 

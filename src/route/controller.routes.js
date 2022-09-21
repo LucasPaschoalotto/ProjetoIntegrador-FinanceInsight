@@ -18,7 +18,7 @@ class RouteController{
     //Método para listar todo os usuários
     async findAllUsers(){
         const findUsers = `
-        SELECT uuid, username
+        SELECT uuid, username, password
         FROM application_users
         `;
 
