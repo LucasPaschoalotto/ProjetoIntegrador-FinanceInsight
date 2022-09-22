@@ -2,13 +2,13 @@ import dataBase from "../database/db.js";
 
 class RouteController{
     //Método para criar usuário
-    async createUser(username, password){
+    async createUser(nome, email, cpf){
         const createUser = `
-        INSERT INTO application_users (username, password)
-        VALUES ($1, $2)
+        INSERT INTO application_usuarios (nome, email, cpf)
+        VALUES ($1, $2, $3)
         `;
         
-        const createUserValues = [username, password];
+        const createUserValues = [nome, email, cpf];
         const {rows} = await dataBase.query(createUser, createUserValues);
         const [newUser] = rows;
     
@@ -18,8 +18,8 @@ class RouteController{
     //Método para listar todo os usuários
     async findAllUsers(){
         const findUsers = `
-        SELECT uuid, username, password
-        FROM application_users
+        SELECT uuid, nome, email, cpf
+        FROM application_usuarios
         `;
 
         const {rows} = await dataBase.query(findUsers);
@@ -28,13 +28,13 @@ class RouteController{
     }
 
     //Método para lstar usuário pelo Nome
-    async findByName(username){
+    async findByUser(nome, email, cpf){
         try{
-            const findUserName = `SELECT uuid, username
-            FROM application_users
-            WHERE username = $1
+            const findUserName = `SELECT uuid, nome, email, cpf
+            FROM application_usuarios
+            WHERE nome = $1 AND email = $2 AND cpf = $3
             `;
-            const findUserNameValues = [username];
+            const findUserNameValues = [nome, email, cpf];
             
             const {rows} = await dataBase.query(findUserName, findUserNameValues);
             const [user] = rows;
@@ -46,25 +46,25 @@ class RouteController{
     }
     
     //Método para atualizar usuário
-    async updateUser(username, newUsername) {
+    async updateUser(nome, email, cpf, newNome, newEmail, newCpf) {
         const updateUserName = `
-        UPDATE application_users
-        SET username = $1
-        WHERE username = $2
+        UPDATE application_usuarios
+        SET nome = $1, email = $2, cpf = $3
+        WHERE nome = $4, email = $5, cpf = $6
         `;
-        const updateUserNameValues = [newUsername, username];
+        const updateUserNameValues = [newNome, newEmail, newCpf, nome, email, cpf];
         
         await dataBase.query(updateUserName, updateUserNameValues);
     }
     
     //Método para deletar usuário
-    async deleteUser(username){
+    async deleteUser(nome, email, cpf){
         const deleteUser = `
         DELETE
-        FROM application_users
-        WHERE username = $1
+        FROM application_usuarios
+        WHERE nome = $1, email = $2, cpf = $3
         `;
-        const deleteUserValues = [username];
+        const deleteUserValues = [nome, email, cpf];
 
         await dataBase.query(deleteUser, deleteUserValues);
     }

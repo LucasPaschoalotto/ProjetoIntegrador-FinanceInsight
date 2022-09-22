@@ -1,49 +1,217 @@
+import Usuario from "../classes/Usuario.js"
 
-const buttonGetUsers = document.getElementById("getUsers");
-const buttonCreateUser = document.getElementById("createUser")
+var logado = 0;
+var usuarioLogado = new Usuario(0, 0, 0, 0);
 
-buttonGetUsers.addEventListener("click", async (info) => {
-    info.preventDefault();
+//Seleciona os botões do HTML
+const buttonGetUsuarios = document.getElementById("getUsuario");
+const buttonCreateUsuario = document.getElementById("createUsuario")
+const buttonLogarUsuario = document.getElementById("logarUsuario");
 
-    let nome;
+
+//Método para retornar usuários
+buttonGetUsuarios.addEventListener("click", async (form) => {
+    //Previne comportamento da tag FORM
+    form.preventDefault();
+
+    //Seleciona elementos do HTML
+    const campoCreate = document.querySelectorAll(".msgCreate");
+    const campoRetorno = document.querySelectorAll(".msgRetorno");
+    const campoLogar = document.querySelectorAll(".msgLogar");
+    const listaUsuarios = document.querySelector(".listaUsuarios");
+
+    //Remove listas printadas anteriormente e mensagem de erro
+    campoCreate.forEach(msg => msg.remove());
+    campoRetorno.forEach(msg => msg.remove());
+    campoLogar.forEach(msg => msg.remove());
+
+    //Fetch GET do DB
+    let usuario;
     await fetch("/users/getAllUsers",{
         method: "GET"
         })
         .then(response => response.json())          
-        .then(json => {
-            nome = json;
-            console.log(nome);
-    });
+        .then(json => usuario = json);
        
-    const listaDeUsuarios = document.querySelector(".listaDeUsuarios");
-    for(var i = 0; i < nome.length; i++){
-        console.log(nome[i])
-        console.log(nome[i].username);
-        listaDeUsuarios.insertAdjacentHTML("afterbegin", `<li>${nome[i].username}</li>`);
+    //Printa todos os valores retornados do DB
+    for(var i = 0; i < usuario.length; i++){
+        listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Nome: ${usuario[i].nome} | Email: ${usuario[i].email} | CPF: ${usuario[i].cpf}</li>`);
     };
 });
 
-buttonCreateUser.addEventListener("click", async(info) => {
-    info.preventDefault();
 
+//Método para criar usuários
+buttonCreateUsuario.addEventListener("click", async(form) => {
+    //Previne comportamento da tag FORM
+    form.preventDefault();
 
-    const a = "testeFrontVar";
-    const b = "testeFrontPass"
+    //Seleciona elementos HTML
+    const campoCreate = document.querySelectorAll(".msgCreate");
+    const campoRetorno = document.querySelectorAll(".msgRetorno");
+    const campoLogar = document.querySelectorAll(".msgLogar");
+    const retornoUsuario = document.getElementById("retorno");
 
-    console.log("ok");
-    const rawResponse = await fetch('/users', {
+    //Remove listas printadas anteriormente e mensagem de erro
+    campoCreate.forEach(msg => msg.remove());
+    campoRetorno.forEach(msg => msg.remove());
+    campoLogar.forEach(msg => msg.remove());
+    
+    //Armazena valores do usuário
+    const nome = document.getElementById("setNome").value;
+    const email = document.getElementById("setEmail").value;
+    const cpf = document.getElementById("setCpf").value;
+    
+    //Verifica se nome e email estão vazios
+    if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Nome, email e cpf precisam ser preenchidos</p>");
+    const newUsuario = new Usuario(nome, email, cpf);
+    
+    //Verifica se usuário existe
+    let verificaUsuario;
+    await fetch("/users/getAllUsers",{
+        method: "GET"
+        })
+        .then(response => response.json())          
+        .then(json => verificaUsuario = json);
+        
+        //Printa todos os valores retornados do DB
+        for(var i = 0; i < verificaUsuario.length; i++){
+            if(verificaUsuario[i].nome === newUsuario.nome && verificaUsuario[i].cpf === newUsuario.cpf){
+                verificaUsuario = 1;
+        }
+    };
+    
+    //Return caso usuário exista no DB
+    if(verificaUsuario === 1) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário já existente</p>");
+    
+    //Cria usuário caso não exista
+    await fetch('/users', {
         method: 'POST',
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({username: a, password: b})
+    },
+    body: JSON.stringify({nome: newUsuario.nome, email: newUsuario.email, cpf: newUsuario.cpf})
     });
-    const content = await rawResponse.json();
+    retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário criado!</p>")
     
-    console.log(content);
 });
+
+//Método para logar usuário
+buttonLogarUsuario.addEventListener("click", async(form) => {
+    //Previne comportamento da tag FORM
+    form.preventDefault();
+
+    //Seleciona elementos HTML
+    const campoCreate = document.querySelectorAll(".msgCreate");
+    const campoRetorno = document.querySelectorAll(".msgRetorno");
+    const campoLogar = document.querySelectorAll(".msgLogar");
+    const retornoUsuario = document.getElementById("retorno");
+    const campoForm = document.getElementById("login");
+
+    //Remove listas printadas anteriormente e mensagem de erro
+    campoCreate.forEach(msg => msg.remove());
+    campoRetorno.forEach(msg => msg.remove());
+    campoLogar.forEach(msg => msg.remove());
+
+    //Armazena valores do usuário
+    const nome = document.getElementById("setNome").value;
+    const email = document.getElementById("setEmail").value;
+    const cpf = document.getElementById("setCpf").value;
     
+    //Verifica se nome e email estão vazios
+    if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Nome, email e cpf precisam ser preenchidos</p>");
+    const logarUsuario = new Usuario(nome, email, cpf);
+
+    //Verifica se usuário existe
+    let verificaUsuario;
+    await fetch("/users/getAllUsers",{
+        method: "GET"
+        })
+        .then(response => response.json())          
+        .then(json => verificaUsuario = json);
+        
+    //Printa todos os valores retornados do DB
+    for(var i = 0; i < verificaUsuario.length; i++){
+        if(verificaUsuario[i].nome === logarUsuario.nome && verificaUsuario[i].cpf === logarUsuario.cpf){
+            usuarioLogado.nome = verificaUsuario[i].nome;
+            usuarioLogado.email = verificaUsuario[i].email;
+            usuarioLogado.cpf = verificaUsuario[i].cpf;
+            usuarioLogado.id = verificaUsuario[i].uuid;
+            verificaUsuario = 1
+        };
+    };
+
+    console.log(usuarioLogado);
+    
+    //Return caso usuário exista no DB
+    if(verificaUsuario === 0) return
+
+    campoForm.remove();
+    
+    const formStart = document.getElementById("start");
+    formStart.insertAdjacentHTML("afterbegin", `
+    <p> Usuário ${usuarioLogado.nome} logado com sucesso! </p>
+    <form>
+        <input name="" id="" placeholder="Conta"/>
+        <input name="" id="" placeholder="Saldo"/>
+        <input name="" id="" placeholder="Descrição"/>
+        <button id="inserirConta">Inserir Conta</button>
+    </form>`);
+
+    const setConta = document.getElementById("inserirConta");
+    setConta.addEventListener("click", (form) => {
+        form.preventDefault();
+        console.log("click");
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /*const getRoute = '/users/getAllUsers';
 

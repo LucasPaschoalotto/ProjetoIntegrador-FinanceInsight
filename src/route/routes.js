@@ -10,12 +10,16 @@ rota.get("/", (req, res) => {
 rota.get("/index.js", (req, res) => {
     res.sendFile("index.js", {root: './src/public'});
 });
+rota.get("/classes/Usuario.js", (req, res) => {
+    res.sendFile("Usuario.js", {root: './src/classes'});
+});
 
 //ROTA CREATE USUARIO
 rota.post("/users", async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const user = await controllerRoutes.createUser(username, password);
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const cpf = req.body.cpf;
+    const user = await controllerRoutes.createUser(nome, email, cpf);
     res.status(200).send(user);
 });
 
@@ -26,10 +30,12 @@ rota.get("/users/getAllUsers", async(req, res) => {
 });
 
 //ROTA READ BY NAME
-rota.get("/users/getByName", async(req, res) => {
+rota.get("/users/getByUser", async(req, res) => {
     try{
-        const username = req.body.username;    
-        const getUserName = await controllerRoutes.findByName(username);
+        const nome = req.body.nome;
+        const email = req.body.email;
+        const cpf = req.body.cpf;
+        const getUserName = await controllerRoutes.findByUser(nome, email, cpf);
         //if(!getUserName) return res.sendStatus(400);
         res.status(200).send(getUserName);
     } catch(error){
@@ -39,16 +45,22 @@ rota.get("/users/getByName", async(req, res) => {
 
 //ROTA UPDATE BY NAME
 rota.put("/users/updateByName", async(req, res) => {
-    const username = req.body.username;
-    const newUsername = req.body.newUsername;
-    await controllerRoutes.updateUser(username, newUsername);
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const cpf = req.body.cpf;
+    const newNome = req.body.nome;
+    const newEmail = req.body.email;
+    const newCpf = req.body.cpf;
+    await controllerRoutes.updateUser(nome, email, cpf, newNome, newEmail, newCpf);
     res.status(200).send();
 });
 
 //ROTA DELETE
 rota.delete("/users/deleteUser", async(req, res) => {
-    const username = req.body.username;
-    await controllerRoutes.deleteUser(username);
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const cpf = req.body.cpf;
+    await controllerRoutes.deleteUser(nome, email, cpf);
     res.status(200).send();
 });
 

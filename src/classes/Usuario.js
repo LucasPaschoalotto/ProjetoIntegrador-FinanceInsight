@@ -2,10 +2,12 @@ export default class Usuario{
     #nome
     #email
     #cpf
-    constructor(nome, email, cpf) {
+    #id
+    constructor(nome, email, cpf, id) {
         this.#nome = nome;
         this.#email = email;
         this.#cpf = cpf
+        this.#id = id;
     }
 
     //GETTERS
@@ -20,6 +22,10 @@ export default class Usuario{
     get cpf(){
         return this.#cpf;
     }
+    
+    get id(){
+        return this.#id;
+    }
 
     //SETTERS
     set nome(novoNome){
@@ -32,6 +38,10 @@ export default class Usuario{
 
     set cpf(novoCpf){
         this.#cpf = novoCpf;
+    }
+
+    set id(novoId){
+        this.#id = novoId;
     }
 
 }

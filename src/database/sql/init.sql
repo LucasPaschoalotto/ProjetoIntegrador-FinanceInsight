@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS application_usuarios(
-    uuid INT NOT NULL,
+    uuid uuid DEFAULT uuid_generate_v4(),
     nome VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
     cpf BIGINT NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS application_usuarios(
 );
 
 CREATE TABLE IF NOT EXISTS application_conta(
-    uuid INT NOT NULL,
+    uuid uuid DEFAULT uuid_generate_v4(),
     numero INT NOT NULL,
     saldo INT NOT NULL,
     usuarioID INT NOT NULL,
