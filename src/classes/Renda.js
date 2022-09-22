@@ -1,13 +1,11 @@
-import Usuario from "./Usuario.js";
-
 export default class Conta {
     #numero
     #saldo
     #usuario
-    constructor(numero, saldo, nome, email, cpf) {
+    constructor(numero, saldo, id) {
         this.#numero = numero;
         this.#saldo = saldo;
-        this.#usuario = new Usuario(nome, email, cpf);
+        this.#usuario = id;
     }
 
     //GETTERS

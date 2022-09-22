@@ -4,7 +4,7 @@ class RouteController{
     //Método para criar usuário
     async createUser(nome, email, cpf){
         const createUser = `
-        INSERT INTO application_usuarios (nome, email, cpf)
+        INSERT INTO usuarios (nome, email, cpf)
         VALUES ($1, $2, $3)
         `;
         
@@ -19,7 +19,7 @@ class RouteController{
     async findAllUsers(){
         const findUsers = `
         SELECT uuid, nome, email, cpf
-        FROM application_usuarios
+        FROM usuarios
         `;
 
         const {rows} = await dataBase.query(findUsers);
@@ -31,7 +31,7 @@ class RouteController{
     async findByUser(nome, email, cpf){
         try{
             const findUserName = `SELECT uuid, nome, email, cpf
-            FROM application_usuarios
+            FROM usuarios
             WHERE nome = $1 AND email = $2 AND cpf = $3
             `;
             const findUserNameValues = [nome, email, cpf];
@@ -48,7 +48,7 @@ class RouteController{
     //Método para atualizar usuário
     async updateUser(nome, email, cpf, newNome, newEmail, newCpf) {
         const updateUserName = `
-        UPDATE application_usuarios
+        UPDATE usuarios
         SET nome = $1, email = $2, cpf = $3
         WHERE nome = $4, email = $5, cpf = $6
         `;
@@ -61,7 +61,7 @@ class RouteController{
     async deleteUser(nome, email, cpf){
         const deleteUser = `
         DELETE
-        FROM application_usuarios
+        FROM usuarios
         WHERE nome = $1, email = $2, cpf = $3
         `;
         const deleteUserValues = [nome, email, cpf];

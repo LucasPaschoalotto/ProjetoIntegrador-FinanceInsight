@@ -1,9 +1,11 @@
-CREATE TABLE IF NOT EXISTS application_usuarios(
+CREATE TABLE IF NOT EXISTS usuarios(
     uuid uuid DEFAULT uuid_generate_v4(),
-    nome VARCHAR NOT NULL,
-    email VARCHAR NOT NULL,
-    cpf BIGINT NOT NULL,
-    PRIMARY KEY (uuid)
+    nome varchar(100) NOT NULL,
+    email varchar(100) NOT NULL,
+    cpf bigserial NOT NULL,
+    datahora timestamptz NOT NULL DEFAULT now(),
+
+	CONSTRAINT id_usuarios PRIMARY KEY (uuid)
 );
 
 CREATE TABLE IF NOT EXISTS application_conta(

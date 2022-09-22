@@ -123,12 +123,13 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     const logarUsuario = new Usuario(nome, email, cpf);
 
     //Verifica se usuário existe
-    let verificaUsuario;
+    let verificaUsuario = 0;
     await fetch("/users/getAllUsers",{
         method: "GET"
         })
         .then(response => response.json())          
         .then(json => verificaUsuario = json);
+        console.log(verificaUsuario);
         
     //Printa todos os valores retornados do DB
     for(var i = 0; i < verificaUsuario.length; i++){
@@ -140,30 +141,41 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             verificaUsuario = 1
         };
     };
-
-    console.log(usuarioLogado);
-    
+ 
     //Return caso usuário exista no DB
-    if(verificaUsuario === 0) return
+    if(verificaUsuario == 0){
+        retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
+    } else{      
+        campoForm.remove();
+        
+        const formStart = document.getElementById("start");
+        formStart.insertAdjacentHTML("afterbegin", `
+        <p> Usuário ${usuarioLogado.nome} logado com sucesso! </p>
+        <form>
+            <p>Rendas:</p>
+            <input name="" id="" placeholder="Valor da Renda"/>
+            <input name="" id="" placeholder="Descrição"/>
+            <button id="inserirRenda">Inserir Renda</button>
+        </form>
+        <form>
+            <p>Despesas:</p>
+            <input name="" id="" placeholder="Valor da Despesa"/>
+            <input name="" id="" placeholder="Descrição"/>
+            <button id="inserirDespesa">Inserir Despesa</button>
+        </form>`);
 
-    campoForm.remove();
-    
-    const formStart = document.getElementById("start");
-    formStart.insertAdjacentHTML("afterbegin", `
-    <p> Usuário ${usuarioLogado.nome} logado com sucesso! </p>
-    <form>
-        <input name="" id="" placeholder="Conta"/>
-        <input name="" id="" placeholder="Saldo"/>
-        <input name="" id="" placeholder="Descrição"/>
-        <button id="inserirConta">Inserir Conta</button>
-    </form>`);
+        const setConta = document.getElementById("inserirRenda");
+        setConta.addEventListener("click", (form) => {
+            form.preventDefault();
+            console.log("click");
+        });
 
-    const setConta = document.getElementById("inserirConta");
-    setConta.addEventListener("click", (form) => {
-        form.preventDefault();
-        console.log("click");
-    });
-
+        const setDespesa = document.getElementById("inserirDespesa");
+        setDespesa.addEventListener("click", (form) => {
+            form.preventDefault();
+            console.log("click");
+        });
+    };
 });
 
 
