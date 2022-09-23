@@ -132,9 +132,10 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         .then(response => response.json())          
         .then(json => verificaUsuarioLogin = json);
         
-    //Printa todos os valores retornados do DB
+    //Verifica, da lista retornada pelo DB, se existe um usuário com mesmo nome e cpf
     for(var i = 0; i < verificaUsuarioLogin.length; i++){
         if(verificaUsuarioLogin[i].nome === logarUsuario.nome && verificaUsuarioLogin[i].cpf === logarUsuario.cpf){
+            //Variável para manter dados do usuário logado
             var usuarioLogado = new Usuario(verificaUsuarioLogin[i].uuid, verificaUsuarioLogin[i].nome, verificaUsuarioLogin[i].email, verificaUsuarioLogin[i].cpf)
             logado = 1;
         };
@@ -179,10 +180,12 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoValorRenda = document.getElementById("setValorRenda");
             const campoDescricaoRenda = document.getElementById("setDescricaoRenda")
             const campoDespesa = document.querySelectorAll(".msgDespesa")
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
 
             //Remove mensagem printada anteriormente
             campoRenda.forEach(msg => msg.remove());
             campoDespesa.forEach(msg => msg.remove());
+            campoRetorno.forEach(msg => msg.remove());
 
             //Armazena valores da renda
             const id_usuario = usuarioLogado.id;
@@ -262,15 +265,77 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             form.preventDefault();   
 
             //Seleciona elementos HTML
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
+            const listaUsuarios = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
+            campoRetorno.forEach(msg => msg.remove());
             campoRenda.forEach(msg => msg.remove());
             campoDespesa.forEach(msg => msg.remove());
 
-        });
+            //Retorna todas as rendas do DB
+            let verificaUsuarioRenda;
+            await fetch("/users/getAllRendas",{
+                method: "GET"
+                })
+                .then(response => response.json())          
+                .then(json => verificaUsuarioRenda = json);
 
+                console.log(verificaUsuarioRenda);
+                
+                //Verifica, da lista retornada pelo DB, as rendas que possuem o id do usuário logado como FK
+            for(var i = 0; i < verificaUsuarioRenda.length; i++){
+                if(verificaUsuarioRenda[i].id_usuario === usuarioLogado.id){
+                    let data = new Date(verificaUsuarioRenda[i].datahora)
+                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
+                    //Printa a lista de Rendas do usuário
+                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                };
+            };
+
+            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
+        });
+        
+        const exibirExtrato = document.getElementById("exibirExtrato");
+        exibirExtrato.addEventListener("click", async(form) => {
+            //Previne comportamento da tag FORM
+            form.preventDefault();   
+
+            //Seleciona elementos HTML
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+            const listaUsuarios = document.getElementById("lista");
+
+            //Remove mensagem printada anteriormente
+            campoRetorno.forEach(msg => msg.remove());
+            campoRenda.forEach(msg => msg.remove());
+            campoDespesa.forEach(msg => msg.remove());
+
+            //Verifica se existe uma conta Saldo do Usuário no DB
+            let verificaUsuarioExtrato;
+            await fetch("/users/getAllSaldos",{
+                method: "GET"
+                })
+                .then(response => response.json())          
+                .then(json => verificaUsuarioDespesa = json);
+
+                console.log(verificaUsuarioDespesa);
+                
+                //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
+            for(var i = 0; i < verificaUsuarioDespesa.length; i++){
+                if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
+                    let data = new Date(verificaUsuarioDespesa[i].datahora)
+                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
+                    //Printa a lista de Despesa do usuário
+                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                };
+            };
+
+            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
+        });
 
 
 

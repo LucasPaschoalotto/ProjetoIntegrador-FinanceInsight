@@ -72,7 +72,7 @@ class RouteController{
     //Método para listar todo as rendas
     async findAllRendas(){
         const findRendas = `
-        SELECT uuid, id_usuario, valor, descricao
+        SELECT uuid, id_usuario, valor, descricao, datahora
         FROM rendas
         `;
 
