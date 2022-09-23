@@ -21,7 +21,8 @@ buttonGetUsuarios.addEventListener("click", async (form) => {
     const campoCreate = document.querySelectorAll(".msgCreate");
     const campoRetorno = document.querySelectorAll(".msgRetorno");
     const campoLogar = document.querySelectorAll(".msgLogar");
-    const listaUsuarios = document.getElementById("lista");
+    const listaRetorno
+     = document.getElementById("lista");
 
     //Remove listas printadas anteriormente e mensagem de erro
     campoCreate.forEach(msg => msg.remove());
@@ -38,7 +39,8 @@ buttonGetUsuarios.addEventListener("click", async (form) => {
        
     //Printa todos os valores retornados do DB
     for(var i = 0; i < usuario.length; i++){
-        listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Nome: ${usuario[i].nome} | Email: ${usuario[i].email} | CPF: ${usuario[i].cpf}</li>`);
+        listaRetorno
+        .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Nome: ${usuario[i].nome} | Email: ${usuario[i].email} | CPF: ${usuario[i].cpf}</li>`);
     };
 });
 
@@ -275,7 +277,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaUsuarios = document.getElementById("lista");
+            const listaRetorno
+             = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -289,16 +292,15 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 })
                 .then(response => response.json())          
                 .then(json => verificaUsuarioRenda = json);
-
-                console.log(verificaUsuarioRenda);
-                
+              
             //Verifica, da lista retornada pelo DB, as rendas que possuem o id do usuário logado como FK
             for(var i = 0; i < verificaUsuarioRenda.length; i++){
                 if(verificaUsuarioRenda[i].id_usuario === usuarioLogado.id){
                     let data = new Date(verificaUsuarioRenda[i].datahora)
                     let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
                     //Printa a lista de Rendas do usuário
-                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                    listaRetorno
+                    .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
                 };
             };
 
@@ -315,7 +317,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaUsuarios = document.getElementById("lista");
+            const listaRetorno
+             = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -336,7 +339,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     let data = new Date(verificaUsuarioDespesa[i].datahora)
                     let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
                     //Printa a lista de Despesa do usuário
-                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
+                    listaRetorno
+                    .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
                 };
             };
 
@@ -352,7 +356,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaUsuarios = document.getElementById("lista");
+            const listaRetorno
+             = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -441,17 +446,15 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             };
 
             //Retorna como saldo pro usuário e faz Update no DB
-            
+            newContaSaldo.renda = rendaTemporaria.valor;
+            newContaSaldo.despesa = despesaTemporaria.valor;
+            newContaSaldo.saldo = newContaSaldo.renda - newContaSaldo.despesa;
 
-            
+            //Mostra o extrato pro usuário
+            listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Total de Rendas: R$${newContaSaldo.renda.toFixed(2)}</li><li class="msgRetorno">Total de Despesas: R$${newContaSaldo.despesa.toFixed(2)}</li><li class="msgRetorno">Saldo: R$${newContaSaldo.saldo.toFixed(2)}</li>`);
 
-
-
+         
         });
-
-
-
-
 
 
 
