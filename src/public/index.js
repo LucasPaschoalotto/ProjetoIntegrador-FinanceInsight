@@ -379,7 +379,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     newContaSaldo.saldo = verificaContaSaldo[i].saldo;
                     console.log("conta Saldo já criada");
                     console.log(newContaSaldo);
-                    return existeSaldo = 1;
+                    existeSaldo = 1;
                 } 
             };
 
@@ -408,13 +408,11 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     newContaSaldo.renda = verificaNewContaSaldo[i].renda;
                     newContaSaldo.despesa = verificaNewContaSaldo[i].despesa;
                     newContaSaldo.saldo = verificaNewContaSaldo[i].saldo;
-                    return existeSaldo = 1;                    
+                    existeSaldo = 1;
                 };
             };
 
-            console.log(newContaSaldo.despesa);
-            newContaSaldo.despesa += 5;
-            console.log(newContaSaldo.despesa);
+            
 
 
 
