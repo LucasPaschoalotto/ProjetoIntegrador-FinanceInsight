@@ -56,6 +56,7 @@ class RouteController{
     
         return newSaldo;
     }
+
     //Método para listar todo os usuários
     async findAllUsers(){
         const findUsers = `
@@ -64,6 +65,42 @@ class RouteController{
         `;
 
         const {rows} = await dataBase.query(findUsers);
+        
+        return rows || [];
+    }
+    
+    //Método para listar todo as rendas
+    async findAllRendas(){
+        const findRendas = `
+        SELECT uuid, id_usuario, valor, descricao
+        FROM rendas
+        `;
+
+        const {rows} = await dataBase.query(findRendas);
+        
+        return rows || [];
+    }
+    
+    //Método para listar todo as despesas
+    async findAllDespesas(){
+        const findDespesas = `
+        SELECT uuid, id_usuario, valor, descricao
+        FROM despesas
+        `;
+
+        const {rows} = await dataBase.query(findDespesas);
+        
+        return rows || [];
+    }
+    
+    //Método para listar todo os saldos
+    async findAllSaldos(){
+        const findSaldos = `
+        SELECT uuid, id_usuario, renda, despesa, saldo
+        FROM saldos
+        `;
+
+        const {rows} = await dataBase.query(findSaldos);
         
         return rows || [];
     }

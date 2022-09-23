@@ -148,8 +148,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         <p> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
         <form>
             <p>Rendas:</p>
-            <input name="" id="" placeholder="Valor da Renda"/>
-            <input name="" id="" placeholder="Descrição"/>
+            <input id="setValor" placeholder="Valor da Renda"/>
+            <input id="setDescricao" placeholder="Descrição"/>
             <button id="inserirRenda">Inserir Renda</button>
         </form>
         <form>

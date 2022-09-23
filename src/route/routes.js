@@ -13,6 +13,9 @@ rota.get("/index.js", (req, res) => {
 rota.get("/classes/Usuario.js", (req, res) => {
     res.sendFile("Usuario.js", {root: './src/classes'});
 });
+rota.get("/classes/Renda.js", (req, res) => {
+    res.sendFile("Renda.js", {root: './src/classes'});
+});
 
 //ROTA CREATE USUARIO
 rota.post("/users", async (req, res) => {
@@ -56,6 +59,24 @@ rota.post("/users/saldo", async (req, res) => {
 rota.get("/users/getAllUsers", async(req, res) => {
     const getUsers = await controllerRoutes.findAllUsers();
     res.status(200).send(getUsers);
+});
+
+//ROTA READ ALL RENDAS
+rota.get("/users/getAllRendas", async(req, res) => {
+    const getRendas = await controllerRoutes.findAllRendas();
+    res.status(200).send(getRendas);
+});
+
+//ROTA READ ALL DESPESAS
+rota.get("/users/getAllDespesas", async(req, res) => {
+    const getDespesas = await controllerRoutes.findAllDespesas();
+    res.status(200).send(getDespesas);
+});
+
+//ROTA READ ALL SALDOS
+rota.get("/users/getAllSaldos", async(req, res) => {
+    const getSaldos = await controllerRoutes.findAllSaldos();
+    res.status(200).send(getSaldos);
 });
 
 //ROTA READ BY NAME
