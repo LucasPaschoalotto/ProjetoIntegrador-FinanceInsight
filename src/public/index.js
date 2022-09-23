@@ -123,13 +123,12 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     const logarUsuario = new Usuario(nome, email, cpf);
 
     //Verifica se usuário existe
-    let verificaUsuario = 0;
+    let verificaUsuario;
     await fetch("/users/getAllUsers",{
         method: "GET"
         })
         .then(response => response.json())          
         .then(json => verificaUsuario = json);
-        console.log(verificaUsuario);
         
     //Printa todos os valores retornados do DB
     for(var i = 0; i < verificaUsuario.length; i++){
@@ -138,19 +137,21 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             usuarioLogado.email = verificaUsuario[i].email;
             usuarioLogado.cpf = verificaUsuario[i].cpf;
             usuarioLogado.id = verificaUsuario[i].uuid;
-            verificaUsuario = 1
+            logado = 1
         };
     };
- 
+
     //Return caso usuário exista no DB
-    if(verificaUsuario == 0){
-        retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
+    if(logado == 0){
+        return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
     } else{      
+        console.log(verificaUsuario);
+
         campoForm.remove();
         
         const formStart = document.getElementById("start");
         formStart.insertAdjacentHTML("afterbegin", `
-        <p> Usuário ${usuarioLogado.nome} logado com sucesso! </p>
+        <p> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
         <form>
             <p>Rendas:</p>
             <input name="" id="" placeholder="Valor da Renda"/>
