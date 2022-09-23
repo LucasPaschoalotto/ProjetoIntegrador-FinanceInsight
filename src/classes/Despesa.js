@@ -8,6 +8,6 @@ export default class Despesa extends Transacao{
 
     //MÉTODOS
     debitar(valorDebito){
-        this.valor -= valorDebito;
+        this.valor += valorDebito;
     }; 
 };

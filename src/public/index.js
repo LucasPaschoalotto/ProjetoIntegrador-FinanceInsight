@@ -330,8 +330,6 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 .then(response => response.json())          
                 .then(json => verificaUsuarioDespesa = json);
 
-                console.log(verificaUsuarioDespesa);
-
             //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
             for(var i = 0; i < verificaUsuarioDespesa.length; i++){
                 if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
@@ -377,8 +375,6 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     newContaSaldo.renda = verificaContaSaldo[i].renda;
                     newContaSaldo.despesa = verificaContaSaldo[i].despesa;
                     newContaSaldo.saldo = verificaContaSaldo[i].saldo;
-                    console.log("conta Saldo já criada");
-                    console.log(newContaSaldo);
                     existeSaldo = 1;
                 } 
             };
@@ -411,6 +407,41 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     existeSaldo = 1;
                 };
             };
+
+            //Pega todos as rendas da conta do usuário
+            let verificaRendaSaldo;
+            await fetch("/users/getAllRendas",{
+                method: "GET"
+            })
+            .then(response => response.json())          
+            .then(json => verificaRendaSaldo = json);
+            
+            //Soma todas as rendas e atribui ao usuário
+            var rendaTemporaria = new Renda(0, newContaSaldo.id_usuario, 0, 0);
+            for(var i = 0; i < verificaRendaSaldo.length; i++){
+                if(verificaRendaSaldo[i].id_usuario === newContaSaldo.id_usuario){
+                    rendaTemporaria.depositar(verificaRendaSaldo[i].valor);
+                };            
+            };
+
+            //Pega todos as despesas da conta do usuário
+            let verificaDespesaSaldo;
+            await fetch("/users/getAllDespesas",{
+                method: "GET"
+                })
+                .then(response => response.json())          
+                .then(json => verificaDespesaSaldo = json);
+
+            //Soma todas as rendas e atribui ao usuário
+            var despesaTemporaria = new Despesa(0, newContaSaldo.id_usuario, 0, 0);
+            for(var i = 0; i < verificaDespesaSaldo.length; i++){
+                if(verificaDespesaSaldo[i].id_usuario === newContaSaldo.id_usuario){
+                    despesaTemporaria.debitar(verificaDespesaSaldo[i].valor);
+                };            
+            };
+
+            //Retorna como saldo pro usuário e faz Update no DB
+            
 
             
 
