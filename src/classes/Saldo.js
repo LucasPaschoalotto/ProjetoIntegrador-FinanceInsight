@@ -1,12 +1,12 @@
 export default class Saldo{
     #id
-    #idUsuario
+    #id_usuario
     #renda
     #despesa
     #saldo
-    constructor(id, idUsuario, renda, despesa, saldo){
+    constructor(id, id_usuario, renda, despesa, saldo){
         this.#id = id;
-        this.#idUsuario = idUsuario;
+        this.#id_usuario = id_usuario;
         this.#renda = renda;
         this.#despesa = despesa;
         this.#saldo = saldo;
@@ -17,8 +17,8 @@ export default class Saldo{
         return this.#id;
     };
 
-    get idUsuario(){
-        return this.#idUsuario;
+    get id_usuario(){
+        return this.#id_usuario;
     };
 
     get renda(){
@@ -38,8 +38,8 @@ export default class Saldo{
         this.#id = novoId;
     };
 
-    set idUsuario(novoUsuario){
-        this.#idUsuario = novoUsuario;
+    set id_usuario(novoUsuario){
+        this.#id_usuario = novoUsuario;
     };
 
     set renda(novaRenda){

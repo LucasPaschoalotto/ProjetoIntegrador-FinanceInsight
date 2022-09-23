@@ -25,29 +25,29 @@ rota.post("/users", async (req, res) => {
 
 //ROTA CREATE RENDA
 rota.post("/users/renda", async (req, res) => {
-    const idUsuario = req.body.idUsuario;
+    const id_usuario = req.body.id_usuario;
     const valor = req.body.valor;
     const descricao = req.body.descricao;
-    const renda = await controllerRoutes.createRenda(idUsuario, valor, descricao);
+    const renda = await controllerRoutes.createRenda(id_usuario, valor, descricao);
     res.status(200).send(renda);
 });
 
 //ROTA CREATE DESPESA
 rota.post("/users/despesa", async (req, res) => {
-    const idUsuario = req.body.idUsuario;
+    const id_usuario = req.body.id_usuario;
     const valor = req.body.valor;
     const descricao = req.body.descricao;
-    const despesa = await controllerRoutes.createDespesa(idUsuario, valor, descricao);
+    const despesa = await controllerRoutes.createDespesa(id_usuario, valor, descricao);
     res.status(200).send(despesa);
 });
 
 //ROTA CREATE SALDO
 rota.post("/users/saldo", async (req, res) => {
-    const idUsuario = req.body.idUsuario;
+    const id_usuario = req.body.id_usuario;
     const renda = req.body.renda;
     const despesa = req.body.despesa;
     const saldo = req.body.saldo;
-    const saldoFinal = await controllerRoutes.createSaldo(idUsuario, renda, despesa, saldo);
+    const saldoFinal = await controllerRoutes.createSaldo(id_usuario, renda, despesa, saldo);
     res.status(200).send(saldoFinal);
 });
 

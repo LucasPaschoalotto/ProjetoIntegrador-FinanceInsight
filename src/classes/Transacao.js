@@ -1,11 +1,11 @@
 export default class Transacao {
     #id
-    #idUsuario
+    #id_usuario
     #valor
     #descricao
-    constructor(id, idUsuario, valor, descricao) {
+    constructor(id, id_usuario, valor, descricao) {
         this.#id = id;
-        this.#idUsuario = idUsuario;
+        this.#id_usuario = id_usuario;
         this.#valor = valor;
         this.#descricao = descricao;
     };
@@ -15,8 +15,8 @@ export default class Transacao {
         return this.#id;
     };
     
-    get idUsuario(){
-        return this.#idUsuario;
+    get id_usuario(){
+        return this.#id_usuario;
     };
 
     get valor(){
@@ -33,8 +33,8 @@ export default class Transacao {
         this.#id = novoid;
     };
     
-    set idUsuario(novoidUsuario){
-        this.#idUsuario = novoidUsuario;
+    set id_usuario(novoid_usuario){
+        this.#id_usuario = novoid_usuario;
     };
 
     set valor(novovalor){

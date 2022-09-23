@@ -51,7 +51,7 @@ const novoUsuario = new Usuario(4, "lucas", "lucas@lucas", 111222);
 
 const novaRenda = new Renda(1, novoUsuario.id, 15, "restaurante")
 console.log("Renda: " + novaRenda.id)
-console.log(novaRenda.idUsuario);
+console.log(novaRenda.id_usuario);
 console.log(novaRenda.valor)
 console.log(novaRenda.descricao);
 novaRenda.depositar(50)
@@ -59,7 +59,7 @@ console.log(novaRenda.valor);
 
 const novaDespesa = new Despesa(4, novoUsuario.id, 0, "luz");
 console.log("Despesa: " + novaDespesa.id)
-console.log(novaDespesa.idUsuario);
+console.log(novaDespesa.id_usuario);
 console.log(novaDespesa.valor)
 console.log(novaDespesa.descricao);
 novaDespesa.sacar(100)

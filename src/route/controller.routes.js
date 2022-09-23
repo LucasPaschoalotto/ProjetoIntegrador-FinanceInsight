@@ -16,13 +16,13 @@ class RouteController{
     }
 
     //Método para criar renda
-    async createRenda(idUsuario, valor, descricao){
+    async createRenda(id_usuario, valor, descricao){
         const createRenda = `
-        INSERT INTO rendas (idUsuario, valor, descricao)
+        INSERT INTO rendas (id_usuario, valor, descricao)
         VALUES ($1, $2, $3)
         `;
         
-        const createRendaValues = [idUsuario, valor, descricao];
+        const createRendaValues = [id_usuario, valor, descricao];
         const {rows} = await dataBase.query(createRenda, createRendaValues);
         const [newRenda] = rows;
     
@@ -30,13 +30,13 @@ class RouteController{
     }
 
     //Método para criar despesa
-    async createDespesa(idUsuario, valor, descricao){
+    async createDespesa(id_usuario, valor, descricao){
         const createDespesa = `
-        INSERT INTO despesas (idUsuario, valor, descricao)
+        INSERT INTO despesas (id_usuario, valor, descricao)
         VALUES ($1, $2, $3)
         `;
         
-        const createDespesaValues = [idUsuario, valor, descricao];
+        const createDespesaValues = [id_usuario, valor, descricao];
         const {rows} = await dataBase.query(createDespesa, createDespesaValues);
         const [newDespesa] = rows;
     
@@ -44,13 +44,13 @@ class RouteController{
     }
 
     //Método para criar saldo do usuário
-    async createSaldo(idUsuario, renda, despesa, saldo){
+    async createSaldo(id_usuario, renda, despesa, saldo){
         const createSaldo = `
-        INSERT INTO saldos (idUsuario, renda, despesa, saldo)
+        INSERT INTO saldos (id_usuario, renda, despesa, saldo)
         VALUES ($1, $2, $3, $4)
         `;
         
-        const createSaldoValues = [idUsuario, renda, despesa, saldo];
+        const createSaldoValues = [id_usuario, renda, despesa, saldo];
         const {rows} = await dataBase.query(createSaldo, createSaldoValues);
         const [newSaldo] = rows;
     

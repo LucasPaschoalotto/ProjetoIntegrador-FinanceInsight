@@ -1,3 +1,5 @@
+CREATE database controlefinanceiro
+
 CREATE TABLE IF NOT EXISTS usuarios(
     uuid uuid DEFAULT uuid_generate_v4(),
     nome varchar(100) NOT NULL,
@@ -8,9 +10,10 @@ CREATE TABLE IF NOT EXISTS usuarios(
 	CONSTRAINT id_usuarios PRIMARY KEY (uuid)
 );
 
+
 CREATE TABLE IF NOT EXISTS rendas (
     uuid uuid DEFAULT uuid_generate_v4(),
-	idUsuario int8 NOT null,
+	id_usuario uuid NOT null,
 	valor float NOT NULL,
 	descricao varchar(100) NOT NULL, 
 	datahora timestamptz NOT NULL DEFAULT now(),
@@ -18,35 +21,34 @@ CREATE TABLE IF NOT EXISTS rendas (
 	CONSTRAINT pk_rendas PRIMARY KEY (uuid)
 	
 );
-CREATE INDEX ix_rendas_01 ON rendas USING btree (idUsuario);
+CREATE INDEX ix_rendas_01 ON rendas USING btree (id_usuario);
+ALTER TABLE rendas ADD CONSTRAINT fk_rendas_01 FOREIGN KEY (id_usuario) REFERENCES usuarios(uuid);
 
-ALTER TABLE rendas ADD CONSTRAINT fk_rendas_01 FOREIGN KEY (idUsuario) REFERENCES usuarios(uuid);
 
 CREATE TABLE IF NOT EXISTS despesas (
     uuid uuid DEFAULT uuid_generate_v4(),
-	idUsuario int8 NOT null,
+	id_usuario uuid NOT null,
 	valor float NOT NULL,
 	descricao varchar(100) NOT NULL, 
 	datahora timestamptz NOT NULL DEFAULT now(),
 
-	CONSTRAINT pk_contas PRIMARY KEY (uuid)
+	CONSTRAINT pk_despesas PRIMARY KEY (uuid)
 	
 );
-CREATE INDEX ix_contas_01 ON contas USING btree (idUsuario);
+CREATE INDEX ix_despesas_01 ON despesas USING btree (id_usuario);
+ALTER TABLE despesas ADD CONSTRAINT fk_despesas_01 FOREIGN KEY (id_usuario) REFERENCES usuarios(uuid);
 
-ALTER TABLE despesas ADD CONSTRAINT fk_contas_01 FOREIGN KEY (idUsuario) REFERENCES usuarios(uuid);
 
 CREATE TABLE IF NOT EXISTS saldos (
     uuid uuid DEFAULT uuid_generate_v4(),
-	idUsuario int8 NOT null,
+	id_usuario uuid NOT null,
 	renda float NOT NULL,
 	despesa float NOT NULL, 
 	saldo float NOT NULL,
 	datahora timestamptz NOT NULL DEFAULT now(),
 
-	CONSTRAINT pk_saldo PRIMARY KEY (uuid)
+	CONSTRAINT pk_saldos PRIMARY KEY (uuid)
 	
 );
-CREATE INDEX ix_saldo_01 ON saldo USING btree (idUsuario);
-
-ALTER TABLE saldos ADD CONSTRAINT fk_saldo_01 FOREIGN KEY (idUsuario) REFERENCES usuarios(uuid);
+CREATE INDEX ix_saldos_01 ON saldos USING btree (id_usuario);
+ALTER TABLE saldos ADD CONSTRAINT fk_saldo_01 FOREIGN KEY (id_usuario) REFERENCES usuarios(uuid);
