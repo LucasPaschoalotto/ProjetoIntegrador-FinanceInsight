@@ -76,10 +76,10 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
         .then(json => verificaUsuarioCreate = json);
         
         //Verifica, da lista retornada pelo DB, se existe algum usuário com mesmo CPF
-        for(var i = 0; i < verificaUsuarioCreate.length; i++){
-            if(verificaUsuarioCreate[i].cpf === newUsuario.cpf){
-                verificaUsuarioCreate = 1;
-        }
+    for(var i = 0; i < verificaUsuarioCreate.length; i++){
+        if(verificaUsuarioCreate[i].cpf === newUsuario.cpf){
+            verificaUsuarioCreate = 1;
+        };
     };
     
     //Return caso usuário exista no DB
@@ -93,9 +93,20 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({nome: newUsuario.nome, email: newUsuario.email, cpf: newUsuario.cpf})
-    });
+    })
+    .then(res => {console.log(res.uuid) })
+    ;
     retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário criado!</p>")
-    
+
+    //Cria conta Saldo pro usuário
+    await fetch('/users', {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({nome: newUsuario.nome, email: newUsuario.email, cpf: newUsuario.cpf})
+    });
 });
 
 //Método para logar usuário
@@ -298,6 +309,45 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
         });
         
+        const exibirDespesa = document.getElementById("exibirDespesas");
+        exibirDespesa.addEventListener("click", async(form) => {
+            //Previne comportamento da tag FORM
+            form.preventDefault();   
+
+            //Seleciona elementos HTML
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+            const listaUsuarios = document.getElementById("lista");
+
+            //Remove mensagem printada anteriormente
+            campoRetorno.forEach(msg => msg.remove());
+            campoRenda.forEach(msg => msg.remove());
+            campoDespesa.forEach(msg => msg.remove());
+
+            //Retorna todas as despesas do DB
+            let verificaUsuarioDespesa;
+            await fetch("/users/getAllDespesas",{
+                method: "GET"
+                })
+                .then(response => response.json())          
+                .then(json => verificaUsuarioDespesa = json);
+
+                console.log(verificaUsuarioDespesa);
+
+            //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
+            for(var i = 0; i < verificaUsuarioDespesa.length; i++){
+                if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
+                    let data = new Date(verificaUsuarioDespesa[i].datahora)
+                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
+                    //Printa a lista de Despesa do usuário
+                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
+                };
+            };
+
+            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
+        });
+
         const exibirExtrato = document.getElementById("exibirExtrato");
         exibirExtrato.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
@@ -320,11 +370,23 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 method: "GET"
                 })
                 .then(response => response.json())          
-                .then(json => verificaUsuarioDespesa = json);
+                .then(json => verificaUsuarioSaldo = json);
 
-                console.log(verificaUsuarioDespesa);
+                console.log(verificaUsuarioSaldo);
+
+            for(var i = 0; i < verificaUsuarioSaldo.length; i++){
+                if(verificaUsuarioCreate[i].uuid === usuarioLogado.id){
+                        return verificaUsuarioSaldo = 1;
+                }
+            };
+
+            if(verificaUsuarioSaldo === 1){
+
+            } else{
+
+            }
                 
-                //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
+            //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
             for(var i = 0; i < verificaUsuarioDespesa.length; i++){
                 if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
                     let data = new Date(verificaUsuarioDespesa[i].datahora)

@@ -84,7 +84,7 @@ class RouteController{
     //Método para listar todo as despesas
     async findAllDespesas(){
         const findDespesas = `
-        SELECT uuid, id_usuario, valor, descricao
+        SELECT uuid, id_usuario, valor, descricao, datahora
         FROM despesas
         `;
 

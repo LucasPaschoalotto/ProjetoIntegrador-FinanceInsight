@@ -95,7 +95,6 @@ rota.get("/users/getByUser", async(req, res) => {
         const email = req.body.email;
         const cpf = req.body.cpf;
         const getUserName = await controllerRoutes.findByUser(nome, email, cpf);
-        //if(!getUserName) return res.sendStatus(400);
         res.status(200).send(getUserName);
     } catch(error){
         console.log("erro no retorno do usuário por Nome");
