@@ -4,6 +4,7 @@ import Despesa from "../classes/Despesa.js"
 import Saldo from "../classes/Saldo.js"
 
 var logado = 0;
+var existeSaldo = 0;
 
 //Seleciona os botões do HTML
 const buttonGetUsuarios = document.getElementById("getUsuario");
@@ -74,10 +75,13 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
         })
         .then(response => response.json())          
         .then(json => verificaUsuarioCreate = json);
+
+        console.log(verificaUsuarioCreate);
         
-        //Verifica, da lista retornada pelo DB, se existe algum usuário com mesmo CPF
+    //Verifica, da lista retornada pelo DB, se existe algum usuário com mesmo CPF
     for(var i = 0; i < verificaUsuarioCreate.length; i++){
         if(verificaUsuarioCreate[i].cpf === newUsuario.cpf){
+            newUsuario.id = verificaUsuarioCreate[i].uuid;
             verificaUsuarioCreate = 1;
         };
     };
@@ -93,20 +97,9 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({nome: newUsuario.nome, email: newUsuario.email, cpf: newUsuario.cpf})
-    })
-    .then(res => {console.log(res.uuid) })
-    ;
-    retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário criado!</p>")
-
-    //Cria conta Saldo pro usuário
-    await fetch('/users', {
-        method: 'POST',
-        headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({nome: newUsuario.nome, email: newUsuario.email, cpf: newUsuario.cpf})
     });
+    retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário criado!</p>")
+    
 });
 
 //Método para logar usuário
@@ -155,19 +148,19 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     //Return caso usuário exista no DB
     if(logado == 0){
         return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
-    } else{      
+    } else{  
         campoForm.remove();
         
-        //Atualiza HTML
+        //Atualiza HTML após logar
         const formStart = document.getElementById("start");
         formStart.insertAdjacentHTML("afterbegin", `
         <p> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
         <form>
-            <p>Rendas:</p>
-            <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
-            <input id="setDescricaoRenda" placeholder="Descrição"/>
-            <button id="inserirRenda">Inserir Renda</button>
-            <button id="exibirRendas">Exibir Rendas</button>
+        <p>Rendas:</p>
+        <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
+        <input id="setDescricaoRenda" placeholder="Descrição"/>
+        <button id="inserirRenda">Inserir Renda</button>
+        <button id="exibirRendas">Exibir Rendas</button>
         </form>
         <form>
             <p>Despesas:</p>
@@ -180,6 +173,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         <button id="exibirExtrato">Exibir Extrato e Saldo</button>
         `);
 
+        //Método para inserir RENDA
         const setRenda = document.getElementById("inserirRenda");
         setRenda.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
@@ -226,6 +220,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             campoDescricaoRenda.value = "";
         });
 
+        //Método para inserir Despesas
         const setDespesa = document.getElementById("inserirDespesa");
         setDespesa.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
@@ -270,6 +265,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             campoDescricaoDespesa.value = "";
         });
 
+        //Método para exibir Rendas
         const exibirRenda = document.getElementById("exibirRendas");
         exibirRenda.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
@@ -309,6 +305,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
         });
         
+        //Método para exibir Despesas
         const exibirDespesa = document.getElementById("exibirDespesas");
         exibirDespesa.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
@@ -364,39 +361,63 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             campoRenda.forEach(msg => msg.remove());
             campoDespesa.forEach(msg => msg.remove());
 
-            //Verifica se existe uma conta Saldo do Usuário no DB
-            let verificaUsuarioSaldo;
+            //Verifica se há conta Saldo pro usuário logado
+            var newContaSaldo = new Saldo(0, usuarioLogado.id, 0, 0, 0)
+            let verificaContaSaldo;
             await fetch("/users/getAllSaldos",{
                 method: "GET"
-                })
-                .then(response => response.json())          
-                .then(json => verificaUsuarioSaldo = json);
-
-                console.log(verificaUsuarioSaldo);
-
-            for(var i = 0; i < verificaUsuarioSaldo.length; i++){
-                if(verificaUsuarioCreate[i].uuid === usuarioLogado.id){
-                        return verificaUsuarioSaldo = 1;
-                }
+            })
+            .then(response => response.json())          
+            .then(json => verificaContaSaldo = json);
+            
+            for(var i = 0; i < verificaContaSaldo.length; i++){
+                //Se existe, atribui valores para a contaSaldoLogado e retorna
+                if(verificaContaSaldo[i].id_usuario === newContaSaldo.id_usuario){
+                    newContaSaldo.id = verificaContaSaldo[i].uuid;
+                    newContaSaldo.renda = verificaContaSaldo[i].renda;
+                    newContaSaldo.despesa = verificaContaSaldo[i].despesa;
+                    newContaSaldo.saldo = verificaContaSaldo[i].saldo;
+                    console.log("conta Saldo já criada");
+                    console.log(newContaSaldo);
+                    return existeSaldo = 1;
+                } 
             };
 
-            if(verificaUsuarioSaldo === 1){
-
-            } else{
-
-            }
+            //Se não existe, cria a conta Saldo pro usuário
+            if(existeSaldo === 0){
+                //Caso não, cria nova conta Saldo pro usuário
+                await fetch('/users/saldo', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id_usuario: usuarioLogado.id, renda: 0, despesa: 0, saldo: 0})
+                });
+                //Retorna valor uuid pra conta Saldo
+                let verificaNewContaSaldo;
+                await fetch("/users/getAllSaldos",{
+                    method: "GET"
+                })
+                .then(response => response.json())          
+                .then(json => verificaNewContaSaldo = json);
                 
-            //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
-            for(var i = 0; i < verificaUsuarioDespesa.length; i++){
-                if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
-                    let data = new Date(verificaUsuarioDespesa[i].datahora)
-                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
-                    //Printa a lista de Despesa do usuário
-                    listaUsuarios.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                for(var i = 0; i < verificaNewContaSaldo.length; i++){
+                    //Atribui uuid pra nova conta Saldo
+                    newContaSaldo.id = verificaNewContaSaldo[i].uuid;
+                    newContaSaldo.renda = verificaNewContaSaldo[i].renda;
+                    newContaSaldo.despesa = verificaNewContaSaldo[i].despesa;
+                    newContaSaldo.saldo = verificaNewContaSaldo[i].saldo;
+                    return existeSaldo = 1;                    
                 };
             };
 
-            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
+            console.log(newContaSaldo.despesa);
+            newContaSaldo.despesa += 5;
+            console.log(newContaSaldo.despesa);
+
+
+
         });
 
 

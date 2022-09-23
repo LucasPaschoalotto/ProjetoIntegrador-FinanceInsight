@@ -108,7 +108,7 @@ class RouteController{
     //Método para lstar usuário pelo Nome
     async findByUser(nome, email, cpf){
         try{
-            const findUserName = `SELECT uuid, nome, email, cpf
+            const findUserName = `SELECT uuid
             FROM usuarios
             WHERE nome = $1 AND email = $2 AND cpf = $3
             `;
