@@ -1,4 +1,7 @@
 import Usuario from "../classes/Usuario.js"
+import Renda from "../classes/Renda.js"
+import Despesa from "../classes/Despesa.js"
+import Saldo from "../classes/Saldo.js"
 
 var logado = 0;
 
@@ -17,7 +20,7 @@ buttonGetUsuarios.addEventListener("click", async (form) => {
     const campoCreate = document.querySelectorAll(".msgCreate");
     const campoRetorno = document.querySelectorAll(".msgRetorno");
     const campoLogar = document.querySelectorAll(".msgLogar");
-    const listaUsuarios = document.querySelector(".listaUsuarios");
+    const listaUsuarios = document.getElementById("lista");
 
     //Remove listas printadas anteriormente e mensagem de erro
     campoCreate.forEach(msg => msg.remove());
@@ -65,22 +68,22 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
     const newUsuario = new Usuario(0, nome, email, cpf);
     
     //Verifica se usuário existe
-    let verificaUsuario;
+    let verificaUsuarioCreate;
     await fetch("/users/getAllUsers",{
         method: "GET"
         })
         .then(response => response.json())          
-        .then(json => verificaUsuario = json);
+        .then(json => verificaUsuarioCreate = json);
         
-        //Printa todos os valores retornados do DB
-        for(var i = 0; i < verificaUsuario.length; i++){
-            if(verificaUsuario[i].cpf === newUsuario.cpf){
-                verificaUsuario = 1;
+        //Verifica, da lista retornada pelo DB, se existe algum usuário com mesmo CPF
+        for(var i = 0; i < verificaUsuarioCreate.length; i++){
+            if(verificaUsuarioCreate[i].cpf === newUsuario.cpf){
+                verificaUsuarioCreate = 1;
         }
     };
     
     //Return caso usuário exista no DB
-    if(verificaUsuario === 1) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário já existente</p>");
+    if(verificaUsuarioCreate === 1) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Usuário já existente</p>");
     
     //Cria usuário caso não exista
     await fetch('/users', {
@@ -122,17 +125,17 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     const logarUsuario = new Usuario(0, nome, email, cpf);
 
     //Verifica se usuário existe
-    let verificaUsuario;
+    let verificaUsuarioLogin;
     await fetch("/users/getAllUsers",{
         method: "GET"
         })
         .then(response => response.json())          
-        .then(json => verificaUsuario = json);
+        .then(json => verificaUsuarioLogin = json);
         
     //Printa todos os valores retornados do DB
-    for(var i = 0; i < verificaUsuario.length; i++){
-        if(verificaUsuario[i].nome === logarUsuario.nome && verificaUsuario[i].cpf === logarUsuario.cpf){
-            var usuarioLogado = new Usuario(verificaUsuario[i].uuid, verificaUsuario[i].nome, verificaUsuario[i].email, verificaUsuario[i].cpf)
+    for(var i = 0; i < verificaUsuarioLogin.length; i++){
+        if(verificaUsuarioLogin[i].nome === logarUsuario.nome && verificaUsuarioLogin[i].cpf === logarUsuario.cpf){
+            var usuarioLogado = new Usuario(verificaUsuarioLogin[i].uuid, verificaUsuarioLogin[i].nome, verificaUsuarioLogin[i].email, verificaUsuarioLogin[i].cpf)
             logado = 1;
         };
     };
@@ -143,33 +146,140 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     } else{      
         campoForm.remove();
         
+        //Atualiza HTML
         const formStart = document.getElementById("start");
         formStart.insertAdjacentHTML("afterbegin", `
         <p> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
         <form>
             <p>Rendas:</p>
-            <input id="setValor" placeholder="Valor da Renda"/>
-            <input id="setDescricao" placeholder="Descrição"/>
+            <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
+            <input id="setDescricaoRenda" placeholder="Descrição"/>
             <button id="inserirRenda">Inserir Renda</button>
+            <button id="exibirRendas">Exibir Rendas</button>
         </form>
         <form>
             <p>Despesas:</p>
-            <input name="" id="" placeholder="Valor da Despesa"/>
-            <input name="" id="" placeholder="Descrição"/>
+            <input id="setValorDespesa" placeholder="Valor da Despesa ex: 25.99"/>
+            <input id="setDescricaoDespesa" placeholder="Descrição"/>
             <button id="inserirDespesa">Inserir Despesa</button>
-        </form>`);
+            <button id="exibirDespesas">Exibir Despesas</button>
+        </form>
+        <p></p>
+        <button id="exibirExtrato">Exibir Extrato e Saldo</button>
+        `);
 
-        const setConta = document.getElementById("inserirRenda");
-        setConta.addEventListener("click", (form) => {
+        const setRenda = document.getElementById("inserirRenda");
+        setRenda.addEventListener("click", async(form) => {
+            //Previne comportamento da tag FORM
             form.preventDefault();
-            console.log("click");
+
+            //Seleciona elementos HTML
+            const retornoUsuario = document.getElementById("retorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoValorRenda = document.getElementById("setValorRenda");
+            const campoDescricaoRenda = document.getElementById("setDescricaoRenda")
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+
+            //Remove mensagem printada anteriormente
+            campoRenda.forEach(msg => msg.remove());
+            campoDespesa.forEach(msg => msg.remove());
+
+            //Armazena valores da renda
+            const id_usuario = usuarioLogado.id;
+            const valor = campoValorRenda.value;
+            const descricao = campoDescricaoRenda.value;
+            
+            //Verifica se dados estão preenchidos
+            if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor e Descrição precisam ser preenchidos</p>");
+            
+            //Verifica se valor da renda é um valor numérico
+            if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor da Renda precisa ser um valor numérico!</p>");
+
+            //Cria nova renda
+            const newRenda = new Renda(0, id_usuario, valor, descricao)
+
+            await fetch('/users/renda', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id_usuario: newRenda.id_usuario, valor: newRenda.valor, descricao: newRenda.descricao})
+            });
+            retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Renda inserida com sucesso!</p>");
+            
+            campoValorRenda.value = "";
+            campoDescricaoRenda.value = "";
         });
 
         const setDespesa = document.getElementById("inserirDespesa");
-        setDespesa.addEventListener("click", (form) => {
+        setDespesa.addEventListener("click", async(form) => {
+            //Previne comportamento da tag FORM
             form.preventDefault();
-            console.log("click");
+
+            //Seleciona elementos HTML
+            const retornoUsuario = document.getElementById("retorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+            const campoValorDespesa = document.getElementById("setValorDespesa");
+            const campoDescricaoDespesa = document.getElementById("setDescricaoDespesa")
+
+            //Remove mensagem printada anteriormente
+            campoRenda.forEach(msg => msg.remove());
+            campoDespesa.forEach(msg => msg.remove());
+
+            //Armazena valores da despesa
+            const id_usuario = usuarioLogado.id;
+            const valor = campoValorDespesa.value;
+            const descricao = campoDescricaoDespesa.value;
+            
+            //Verifica se dados estão preenchidos
+            if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor e Descrição precisam ser preenchidos</p>");
+            
+            //Verifica se valor da renda é um valor numérico
+            if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor da Despesa precisa ser um valor numérico!</p>");
+
+            //Cria nova renda
+            const newDespesa = new Despesa(0, id_usuario, valor, descricao)
+
+            await fetch('/users/despesa', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id_usuario: newDespesa.id_usuario, valor: newDespesa.valor, descricao: newDespesa.descricao})
+            });
+            retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Despesa inserida com sucesso!</p>");
+            
+            campoValorDespesa.value = "";
+            campoDescricaoDespesa.value = "";
         });
+
+        const exibirRenda = document.getElementById("exibirRendas");
+        exibirRenda.addEventListener("click", async(form) => {
+            //Previne comportamento da tag FORM
+            form.preventDefault();   
+
+            //Seleciona elementos HTML
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+
+            //Remove mensagem printada anteriormente
+            campoRenda.forEach(msg => msg.remove());
+            campoDespesa.forEach(msg => msg.remove());
+
+        });
+
+
+
+
+
+
+
+
+
+
     };
 });
 

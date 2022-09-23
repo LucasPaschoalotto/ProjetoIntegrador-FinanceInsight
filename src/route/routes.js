@@ -3,7 +3,7 @@ import controllerRoutes from "./controller.routes.js";
 
 const rota = Router()
 
-//Rota inicial do projeto ao subir o servidor
+//Rota inicial do projeto ao subir o servidor e envio de arquivos necessários
 rota.get("/", (req, res) => {
     res.sendFile("index.html", {root: './src/public'});
 });
@@ -13,8 +13,17 @@ rota.get("/index.js", (req, res) => {
 rota.get("/classes/Usuario.js", (req, res) => {
     res.sendFile("Usuario.js", {root: './src/classes'});
 });
+rota.get("/classes/Transacao.js", (req, res) => {
+    res.sendFile("Transacao.js", {root: './src/classes'});
+});
 rota.get("/classes/Renda.js", (req, res) => {
     res.sendFile("Renda.js", {root: './src/classes'});
+});
+rota.get("/classes/Despesa.js", (req, res) => {
+    res.sendFile("Despesa.js", {root: './src/classes'});
+});
+rota.get("/classes/Saldo.js", (req, res) => {
+    res.sendFile("Saldo.js", {root: './src/classes'});
 });
 
 //ROTA CREATE USUARIO

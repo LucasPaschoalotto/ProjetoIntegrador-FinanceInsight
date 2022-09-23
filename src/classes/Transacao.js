@@ -29,16 +29,16 @@ export default class Transacao {
 
 
     //SETTERS
-    set id(novoid){
-        this.#id = novoid;
+    set id(novoId){
+        this.#id = novoId;
     };
     
-    set id_usuario(novoid_usuario){
-        this.#id_usuario = novoid_usuario;
+    set id_usuario(novoId_usuario){
+        this.#id_usuario = novoId_usuario;
     };
 
-    set valor(novovalor){
-        this.#valor = novovalor;
+    set valor(novoValor){
+        this.#valor = novoValor;
     };
 
     set descricao(novaDescricao){

@@ -7,7 +7,7 @@ export default class Despesa extends Transacao{
     };
 
     //MÉTODOS
-    sacar(valorSaque){
-        this.valor -= valorSaque;
+    debitar(valorDebito){
+        this.valor -= valorDebito;
     }; 
 };
