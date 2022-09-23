@@ -62,7 +62,7 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
     
     //Verifica se nome e email estão vazios
     if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgCreate'>Nome, email e cpf precisam ser preenchidos</p>");
-    const newUsuario = new Usuario(nome, email, cpf);
+    const newUsuario = new Usuario(0, nome, email, cpf);
     
     //Verifica se usuário existe
     let verificaUsuario;
@@ -74,7 +74,7 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
         
         //Printa todos os valores retornados do DB
         for(var i = 0; i < verificaUsuario.length; i++){
-            if(verificaUsuario[i].nome === newUsuario.nome && verificaUsuario[i].cpf === newUsuario.cpf){
+            if(verificaUsuario[i].cpf === newUsuario.cpf){
                 verificaUsuario = 1;
         }
     };
@@ -120,7 +120,6 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     //Verifica se nome e email estão vazios
     if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Nome, email e cpf precisam ser preenchidos</p>");
     const logarUsuario = new Usuario(0, nome, email, cpf);
-    console.log(logarUsuario);
 
     //Verifica se usuário existe
     let verificaUsuario;
@@ -142,8 +141,6 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     if(logado == 0){
         return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
     } else{      
-        console.log(usuarioLogado);
-
         campoForm.remove();
         
         const formStart = document.getElementById("start");
