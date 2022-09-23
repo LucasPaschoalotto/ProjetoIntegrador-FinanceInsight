@@ -166,14 +166,12 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         setConta.addEventListener("click", (form) => {
             form.preventDefault();
             console.log("click");
-            console.log(usuarioLogado);
         });
 
         const setDespesa = document.getElementById("inserirDespesa");
         setDespesa.addEventListener("click", (form) => {
             form.preventDefault();
             console.log("click");
-            console.log(usuarioLogado);
         });
     };
 });

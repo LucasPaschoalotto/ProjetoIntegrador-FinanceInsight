@@ -15,6 +15,47 @@ class RouteController{
         return newUser;
     }
 
+    //Método para criar renda
+    async createRenda(idUsuario, valor, descricao){
+        const createRenda = `
+        INSERT INTO rendas (idUsuario, valor, descricao)
+        VALUES ($1, $2, $3)
+        `;
+        
+        const createRendaValues = [idUsuario, valor, descricao];
+        const {rows} = await dataBase.query(createRenda, createRendaValues);
+        const [newRenda] = rows;
+    
+        return newRenda;
+    }
+
+    //Método para criar despesa
+    async createDespesa(idUsuario, valor, descricao){
+        const createDespesa = `
+        INSERT INTO despesas (idUsuario, valor, descricao)
+        VALUES ($1, $2, $3)
+        `;
+        
+        const createDespesaValues = [idUsuario, valor, descricao];
+        const {rows} = await dataBase.query(createDespesa, createDespesaValues);
+        const [newDespesa] = rows;
+    
+        return newDespesa;
+    }
+
+    //Método para criar saldo do usuário
+    async createSaldo(idUsuario, renda, despesa, saldo){
+        const createSaldo = `
+        INSERT INTO saldos (idUsuario, renda, despesa, saldo)
+        VALUES ($1, $2, $3, $4)
+        `;
+        
+        const createSaldoValues = [idUsuario, renda, despesa, saldo];
+        const {rows} = await dataBase.query(createSaldo, createSaldoValues);
+        const [newSaldo] = rows;
+    
+        return newSaldo;
+    }
     //Método para listar todo os usuários
     async findAllUsers(){
         const findUsers = `
