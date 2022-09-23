@@ -2,7 +2,7 @@ import pg from "pg";
 const { Pool } = pg;
 
 //Endereço do DB
-const linkDataBase = { connectionString: "postgres://mckiferl:wEb8E-Y4wgjqqvrXo5ShSakC5LHRSond@kesavan.db.elephantsql.com/mckiferl"};
+const linkDataBase = { connectionString: "postgres://xjgrpcjp:SRjR7vtLBDxIgiraRTORf52vgAqliJYa@kesavan.db.elephantsql.com/xjgrpcjp"};
 
 //Conexão com o DB
 const dataBase = new Pool(linkDataBase);
