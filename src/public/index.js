@@ -1,7 +1,6 @@
 import Usuario from "../classes/Usuario.js"
 
 var logado = 0;
-var usuarioLogado = new Usuario(0, 0, 0, 0);
 
 //Seleciona os botões do HTML
 const buttonGetUsuarios = document.getElementById("getUsuario");
@@ -120,7 +119,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     
     //Verifica se nome e email estão vazios
     if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Nome, email e cpf precisam ser preenchidos</p>");
-    const logarUsuario = new Usuario(nome, email, cpf);
+    const logarUsuario = new Usuario(0, nome, email, cpf);
+    console.log(logarUsuario);
 
     //Verifica se usuário existe
     let verificaUsuario;
@@ -133,11 +133,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     //Printa todos os valores retornados do DB
     for(var i = 0; i < verificaUsuario.length; i++){
         if(verificaUsuario[i].nome === logarUsuario.nome && verificaUsuario[i].cpf === logarUsuario.cpf){
-            usuarioLogado.nome = verificaUsuario[i].nome;
-            usuarioLogado.email = verificaUsuario[i].email;
-            usuarioLogado.cpf = verificaUsuario[i].cpf;
-            usuarioLogado.id = verificaUsuario[i].uuid;
-            logado = 1
+            var usuarioLogado = new Usuario(verificaUsuario[i].uuid, verificaUsuario[i].nome, verificaUsuario[i].email, verificaUsuario[i].cpf)
+            logado = 1;
         };
     };
 
@@ -145,7 +142,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     if(logado == 0){
         return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
     } else{      
-        console.log(verificaUsuario);
+        console.log(usuarioLogado);
 
         campoForm.remove();
         
@@ -169,12 +166,14 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         setConta.addEventListener("click", (form) => {
             form.preventDefault();
             console.log("click");
+            console.log(usuarioLogado);
         });
 
         const setDespesa = document.getElementById("inserirDespesa");
         setDespesa.addEventListener("click", (form) => {
             form.preventDefault();
             console.log("click");
+            console.log(usuarioLogado);
         });
     };
 });

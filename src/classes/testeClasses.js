@@ -1,7 +1,11 @@
-import Conta from "./Conta.js";
+import Conta from "./Transacao.js";
+import ContaCorrente from "./Renda.js";
 import Usuario from "./Usuario.js";
+import Renda from "./Renda.js";
+import Despesa from "./Despesa.js";
+import Saldo from "./Saldo.js";
 
-const novoUsuario = new Usuario("Lucas", "lucas@email.com", 12345);
+/*const novoUsuario = new Usuario("Lucas", "lucas@email.com", 12345);
 console.log("USUARIO");
 //teste Getter
 console.log("nome " + novoUsuario.nome);
@@ -30,10 +34,37 @@ console.log("saldo " + novaConta.saldo);
 console.log("usuario " + novaConta.usuario);
 
 
-
-
+//novaConta.sacar(20); Error
 novaConta.depositar(15);
 console.log("saldo" + novaConta.saldo);
 novaConta.sacar(11);
 console.log("saldo" + novaConta.saldo);
-//novaConta.sacar(20); Error
+
+const novaCorrente = new ContaCorrente(12, 1, "Lucas");
+console.log(novaCorrente);
+console.log(novaCorrente.numero);
+console.log(novaCorrente.saldo)
+console.log(novaCorrente.depositar(50));
+console.log(novaCorrente.saldo)
+*/
+const novoUsuario = new Usuario(4, "lucas", "lucas@lucas", 111222);
+
+const novaRenda = new Renda(1, novoUsuario.id, 15, "restaurante")
+console.log("Renda: " + novaRenda.id)
+console.log(novaRenda.idUsuario);
+console.log(novaRenda.valor)
+console.log(novaRenda.descricao);
+novaRenda.depositar(50)
+console.log(novaRenda.valor);
+
+const novaDespesa = new Despesa(4, novoUsuario.id, 0, "luz");
+console.log("Despesa: " + novaDespesa.id)
+console.log(novaDespesa.idUsuario);
+console.log(novaDespesa.valor)
+console.log(novaDespesa.descricao);
+novaDespesa.sacar(100)
+console.log(novaDespesa.valor);
+
+const novoSaldo = new Saldo(1, novoUsuario.id, novaRenda.valor, novaDespesa.valor, 0)
+novoSaldo.calcularSaldo();
+console.log("Saldo: "+ novoSaldo.saldo);
