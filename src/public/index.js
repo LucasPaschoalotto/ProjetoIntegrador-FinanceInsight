@@ -138,7 +138,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             <button id="exibirDespesas">Exibir Despesas</button>
         </form>
         <p></p>
-        <button id="exibirExtrato">Exibir Extrato e Saldo</button>
+        <button id="exibirExtrato">Salvar e Exibir Extrato e Saldo</button>
         `);
 
         //Método para inserir RENDA
