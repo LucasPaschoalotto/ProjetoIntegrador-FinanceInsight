@@ -11,40 +11,6 @@ const buttonGetUsuarios = document.getElementById("getUsuario");
 const buttonCreateUsuario = document.getElementById("createUsuario")
 const buttonLogarUsuario = document.getElementById("logarUsuario");
 
-
-//Método para retornar usuários
-buttonGetUsuarios.addEventListener("click", async (form) => {
-    //Previne comportamento da tag FORM
-    form.preventDefault();
-
-    //Seleciona elementos do HTML
-    const campoCreate = document.querySelectorAll(".msgCreate");
-    const campoRetorno = document.querySelectorAll(".msgRetorno");
-    const campoLogar = document.querySelectorAll(".msgLogar");
-    const listaRetorno
-     = document.getElementById("lista");
-
-    //Remove listas printadas anteriormente e mensagem de erro
-    campoCreate.forEach(msg => msg.remove());
-    campoRetorno.forEach(msg => msg.remove());
-    campoLogar.forEach(msg => msg.remove());
-
-    //Fetch GET do DB
-    let usuario;
-    await fetch("/users/getAllUsers",{
-        method: "GET"
-        })
-        .then(response => response.json())          
-        .then(json => usuario = json);
-       
-    //Printa todos os valores retornados do DB
-    for(var i = 0; i < usuario.length; i++){
-        listaRetorno
-        .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Nome: ${usuario[i].nome} | Email: ${usuario[i].email} | CPF: ${usuario[i].cpf}</li>`);
-    };
-});
-
-
 //Método para criar usuários
 buttonCreateUsuario.addEventListener("click", async(form) => {
     //Previne comportamento da tag FORM
@@ -234,10 +200,13 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoDespesa = document.querySelectorAll(".msgDespesa")
             const campoValorDespesa = document.getElementById("setValorDespesa");
             const campoDescricaoDespesa = document.getElementById("setDescricaoDespesa")
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
+
 
             //Remove mensagem printada anteriormente
             campoRenda.forEach(msg => msg.remove());
             campoDespesa.forEach(msg => msg.remove());
+            campoRetorno.forEach(msg => msg.remove());
 
             //Armazena valores da despesa
             const id_usuario = usuarioLogado.id;
@@ -277,8 +246,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaRetorno
-             = document.getElementById("lista");
+            const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -299,8 +267,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     let data = new Date(verificaUsuarioRenda[i].datahora)
                     let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
                     //Printa a lista de Rendas do usuário
-                    listaRetorno
-                    .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                    listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
                 };
             };
 
@@ -317,8 +284,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaRetorno
-             = document.getElementById("lista");
+            const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -339,8 +305,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     let data = new Date(verificaUsuarioDespesa[i].datahora)
                     let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
                     //Printa a lista de Despesa do usuário
-                    listaRetorno
-                    .insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
+                    listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
                 };
             };
 
@@ -356,8 +321,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
             const campoRenda = document.querySelectorAll(".msgRenda");
             const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaRetorno
-             = document.getElementById("lista");
+            const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
             campoRetorno.forEach(msg => msg.remove());
@@ -453,6 +417,15 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             //Mostra o extrato pro usuário
             listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Total de Rendas: R$${newContaSaldo.renda.toFixed(2)}</li><li class="msgRetorno">Total de Despesas: R$${newContaSaldo.despesa.toFixed(2)}</li><li class="msgRetorno">Saldo: R$${newContaSaldo.saldo.toFixed(2)}</li>`);
 
+            //Faz o Update dos valores no DB
+            await fetch('/users/updateSaldo', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id_usuario: newContaSaldo.id_usuario, renda: newContaSaldo.renda, despesa: newContaSaldo.despesa, saldo: newContaSaldo.saldo})
+            });
          
         });
 

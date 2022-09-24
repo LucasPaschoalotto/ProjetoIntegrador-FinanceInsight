@@ -124,13 +124,13 @@ class RouteController{
     }
     
     //Método para atualizar usuário
-    async updateUser(nome, email, cpf, newNome, newEmail, newCpf) {
+    async updateSaldo(id_usuario, renda, despesa, saldo) {
         const updateUserName = `
-        UPDATE usuarios
-        SET nome = $1, email = $2, cpf = $3
-        WHERE nome = $4, email = $5, cpf = $6
+        UPDATE saldos
+        SET renda = $2, despesa = $3, saldo = $4
+        WHERE id_usuario = $1
         `;
-        const updateUserNameValues = [newNome, newEmail, newCpf, nome, email, cpf];
+        const updateUserNameValues = [id_usuario, renda, despesa, saldo];
         
         await dataBase.query(updateUserName, updateUserNameValues);
     }

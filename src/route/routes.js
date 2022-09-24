@@ -102,14 +102,12 @@ rota.get("/users/getByUser", async(req, res) => {
 })
 
 //ROTA UPDATE BY NAME
-rota.put("/users/updateByName", async(req, res) => {
-    const nome = req.body.nome;
-    const email = req.body.email;
-    const cpf = req.body.cpf;
-    const newNome = req.body.nome;
-    const newEmail = req.body.email;
-    const newCpf = req.body.cpf;
-    await controllerRoutes.updateUser(nome, email, cpf, newNome, newEmail, newCpf);
+rota.put("/users/updateSaldo", async(req, res) => {
+    const id_usuario = req.body.id_usuario;
+    const renda = req.body.renda;
+    const despesa = req.body.despesa;
+    const saldo = req.body.saldo;
+    await controllerRoutes.updateSaldo(id_usuario, renda, despesa, saldo);
     res.status(200).send();
 });
 
