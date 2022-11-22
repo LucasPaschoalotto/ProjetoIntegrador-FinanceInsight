@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
     <title>Finance Insight</title>
 </head>
 
 <body>
-    <p id="title"> Financial Insight </p>
+    <header>
+        <h1>Finance Insight</h1>
+    </header>
     <p id="start"></p>
     <form id="login">
-        <input name="enviarNome" id="setNome" placeholder="Insira seu nome"/>
-        <input name="enviarEmail" id="setEmail" placeholder="Insira seu email"/>
-        <input name="enviarCPF" id="setCpf" placeholder="Insira seu CPF"/>
-        <button id="logarUsuario">Logar</button>
-        <button id="createUsuario">Criar Usuário</button>
+        <div>
+            <input name="enviarNome" id="setNome" placeholder="Insira seu nome"/>
+            <input name="enviarEmail" id="setEmail" placeholder="Insira seu email"/>
+            <input name="enviarCPF" id="setCpf" placeholder="Insira seu CPF"/>
+        </div>
+        <div>
+            <button id="logarUsuario">Logar</button>
+            <button id="createUsuario">Criar Usuário</button>
+        </div>
     </form>
     <p id="retorno"></p>
     <ul id="lista"></ul>

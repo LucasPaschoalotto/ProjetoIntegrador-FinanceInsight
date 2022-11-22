@@ -1,0 +1,52 @@
+body {
+    font-family: 'Courier New', Courier, monospace;    
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+}
+
+h1 {
+    color: #081CDF;
+    font-size: 4em;
+    text-align: center;
+}
+
+#login {
+    display: flex;
+    justify-content: center;
+    height: 4em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+}
+
+#setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario {
+    margin: 5px;
+    padding: 5px;
+    border-color: rgb(54, 54, 54);
+    text-align: center;
+}
+
+#setNome, #setEmail, #setCpf{
+    height: 31px;
+    width: 150px;
+}
+
+#logarUsuario, #createUsuario{
+    height: 45px;
+    width: 80px;
+}
+
+#retorno {
+    text-align: center;
+}
+
+@media (min-width: 769px) {
+    #login{
+        flex-wrap: wrap;
+    }
+
+
+}   

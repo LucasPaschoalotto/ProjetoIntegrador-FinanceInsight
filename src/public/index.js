@@ -7,9 +7,13 @@ var logado = 0;
 var existeSaldo = 0;
 
 //Seleciona os botões do HTML
-const buttonGetUsuarios = document.getElementById("getUsuario");
-const buttonCreateUsuario = document.getElementById("createUsuario")
-const buttonLogarUsuario = document.getElementById("logarUsuario");
+var buttonCreateUsuario = document.getElementById("createUsuario")
+var buttonLogarUsuario = document.getElementById("logarUsuario");
+
+//Função para remover elementos
+function removeMsg(element){
+    return element.forEach(msg => msg.remove());
+}
 
 //Método para criar usuários
 buttonCreateUsuario.addEventListener("click", async(form) => {
@@ -17,15 +21,15 @@ buttonCreateUsuario.addEventListener("click", async(form) => {
     form.preventDefault();
 
     //Seleciona elementos HTML
-    const campoCreate = document.querySelectorAll(".msgCreate");
-    const campoRetorno = document.querySelectorAll(".msgRetorno");
-    const campoLogar = document.querySelectorAll(".msgLogar");
-    const retornoUsuario = document.getElementById("retorno");
+    var campoCreate = document.querySelectorAll(".msgCreate");
+    var campoRetorno = document.querySelectorAll(".msgRetorno");
+    var campoLogar = document.querySelectorAll(".msgLogar");
+    var retornoUsuario = document.getElementById("retorno");
 
     //Remove listas printadas anteriormente e mensagem de erro
-    campoCreate.forEach(msg => msg.remove());
-    campoRetorno.forEach(msg => msg.remove());
-    campoLogar.forEach(msg => msg.remove());
+    removeMsg(campoCreate);
+    removeMsg(campoRetorno);
+    removeMsg(campoLogar);
     
     //Armazena valores do usuário
     const nome = document.getElementById("setNome").value;
@@ -76,16 +80,16 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     form.preventDefault();
 
     //Seleciona elementos HTML
-    const campoCreate = document.querySelectorAll(".msgCreate");
-    const campoRetorno = document.querySelectorAll(".msgRetorno");
-    const campoLogar = document.querySelectorAll(".msgLogar");
-    const retornoUsuario = document.getElementById("retorno");
-    const campoForm = document.getElementById("login");
+    var campoCreate = document.querySelectorAll(".msgCreate");
+    var campoRetorno = document.querySelectorAll(".msgRetorno");
+    var campoLogar = document.querySelectorAll(".msgLogar");
+    var retornoUsuario = document.getElementById("retorno");
+    var campoForm = document.getElementById("login");
 
     //Remove listas printadas anteriormente e mensagem de erro
-    campoCreate.forEach(msg => msg.remove());
-    campoRetorno.forEach(msg => msg.remove());
-    campoLogar.forEach(msg => msg.remove());
+    removeMsg(campoCreate);
+    removeMsg(campoRetorno);
+    removeMsg(campoLogar);
 
     //Armazena valores do usuário
     const nome = document.getElementById("setNome").value;
@@ -117,7 +121,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     if(logado == 0){
         return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
     } else{  
-        campoForm.remove();
+        removeMsg(campoForm);
         
         //Atualiza HTML após logar
         const formStart = document.getElementById("start");
@@ -156,9 +160,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const campoRetorno = document.querySelectorAll(".msgRetorno");
 
             //Remove mensagem printada anteriormente
-            campoRenda.forEach(msg => msg.remove());
-            campoDespesa.forEach(msg => msg.remove());
-            campoRetorno.forEach(msg => msg.remove());
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Armazena valores da renda
             const id_usuario = usuarioLogado.id;
@@ -204,9 +208,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
 
 
             //Remove mensagem printada anteriormente
-            campoRenda.forEach(msg => msg.remove());
-            campoDespesa.forEach(msg => msg.remove());
-            campoRetorno.forEach(msg => msg.remove());
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Armazena valores da despesa
             const id_usuario = usuarioLogado.id;
@@ -249,9 +253,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
-            campoRetorno.forEach(msg => msg.remove());
-            campoRenda.forEach(msg => msg.remove());
-            campoDespesa.forEach(msg => msg.remove());
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Retorna todas as rendas do DB
             let verificaUsuarioRenda;
@@ -287,9 +291,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
-            campoRetorno.forEach(msg => msg.remove());
-            campoRenda.forEach(msg => msg.remove());
-            campoDespesa.forEach(msg => msg.remove());
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Retorna todas as despesas do DB
             let verificaUsuarioDespesa;
@@ -324,9 +328,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             const listaRetorno = document.getElementById("lista");
 
             //Remove mensagem printada anteriormente
-            campoRetorno.forEach(msg => msg.remove());
-            campoRenda.forEach(msg => msg.remove());
-            campoDespesa.forEach(msg => msg.remove());
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Verifica se há conta Saldo pro usuário logado
             var newContaSaldo = new Saldo(0, usuarioLogado.id, 0, 0, 0)

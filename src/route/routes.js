@@ -10,6 +10,9 @@ rota.get("/", (req, res) => {
 rota.get("/index.js", (req, res) => {
     res.sendFile("index.js", {root: './src/public'});
 });
+rota.get("/index.css", (req, res) => {
+    res.sendFile("index.css", {root: './src/public'});
+});
 rota.get("/classes/Usuario.js", (req, res) => {
     res.sendFile("Usuario.js", {root: './src/classes'});
 });
@@ -24,6 +27,9 @@ rota.get("/classes/Despesa.js", (req, res) => {
 });
 rota.get("/classes/Saldo.js", (req, res) => {
     res.sendFile("Saldo.js", {root: './src/classes'});
+});
+rota.get("/classes/Html.js", (req, res) => {
+    res.sendFile("Usuario.js", {root: './src/classes'});
 });
 
 //ROTA CREATE USUARIO
