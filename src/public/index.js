@@ -85,7 +85,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     var campoLogar = document.querySelectorAll(".msgLogar");
     var retornoUsuario = document.getElementById("retorno");
     var campoForm = document.getElementById("login");
-
+    
     //Remove listas printadas anteriormente e mensagem de erro
     removeMsg(campoCreate);
     removeMsg(campoRetorno);
@@ -120,13 +120,19 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     //Return caso usuário exista no DB
     if(logado == 0){
         return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Usuário não cadastrado</p>")
-    } else{  
-        removeMsg(campoForm);
-        
+    } else{
+        campoForm.remove();
+                
         //Atualiza HTML após logar
         const formStart = document.getElementById("start");
         formStart.insertAdjacentHTML("afterbegin", `
-        <p> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
+        <p id="msgLogin"> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
+        <div class="tipoTransacao">
+        <input type="radio" id="rendas">
+        <label for="rendas">Rendas</label>
+        <input type="radio" id="despesas">
+        <label for="despesas">Despesas</label>
+        </div>
         <form>
         <p>Rendas:</p>
         <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>

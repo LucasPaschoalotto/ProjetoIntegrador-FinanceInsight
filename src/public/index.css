@@ -16,36 +16,46 @@ h1 {
 #login {
     display: flex;
     justify-content: center;
-    height: 4em;
+    height: 3em;
     flex-direction: row;
     flex-wrap: wrap;
-    align-items: start;
+    align-items: stretch;
+
 }
 
 #setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario {
     margin: 5px;
-    padding: 5px;
-    border-color: rgb(54, 54, 54);
+    border-radius: 5px;
+    border-color: #081CDF;
+    border-style: solid;
     text-align: center;
 }
 
-#setNome, #setEmail, #setCpf{
-    height: 31px;
-    width: 150px;
-}
-
-#logarUsuario, #createUsuario{
-    height: 45px;
-    width: 80px;
-}
-
-#retorno {
+#retorno, #msgLogin {
     text-align: center;
+    color: #081CDF;
+    font-weight: bold;
+    font-size: 20px;
 }
 
-@media (min-width: 769px) {
+@media (max-width: 769px) {
     #login{
+        height: 17em;
+        justify-content: center;
         flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    #setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario {
+        height: 40px;
+        margin: 5px;
+        border-radius: 5px;
+        border-color: #081CDF;
+        border-style: solid;
+        text-align: center;
+        align-items: stretch;
+
     }
 
 
