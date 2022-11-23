@@ -128,10 +128,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         formStart.insertAdjacentHTML("afterbegin", `
         <p id="msgLogin"> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
         <div class="tipoTransacao">
-        <input type="radio" id="rendas">
-        <label for="rendas">Rendas</label>
-        <input type="radio" id="despesas">
-        <label for="despesas">Despesas</label>
+        <label id="transacaoRenda"><input type="radio" name="transacao" value="renda"/>Rendas</label>
+        <label id="transacaoDespesa"><input type="radio" name="transacao" value="despesa"/>Despesas</label>
         </div>
         <form>
         <p>Rendas:</p>
@@ -150,6 +148,8 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         <p></p>
         <button id="exibirExtrato">Salvar e Exibir Extrato e Saldo</button>
         `);
+
+ 
 
         //Método para inserir RENDA
         const setRenda = document.getElementById("inserirRenda");

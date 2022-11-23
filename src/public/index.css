@@ -38,6 +38,25 @@ h1 {
     font-size: 20px;
 }
 
+.tipoTransacao {
+    text-align: center;
+    color: #081CDF;
+    font-weight: bold;
+    align-items: center;
+}
+
+input[type=radio]{
+    align-items: center;
+}
+
+#transacaoRenda {
+    color: #226027;
+}
+
+#transacaoDespesa{
+    color: #AB1B04;
+}
+
 @media (max-width: 769px) {
     #login{
         height: 17em;
