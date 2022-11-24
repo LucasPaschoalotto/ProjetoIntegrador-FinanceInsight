@@ -1,7 +1,7 @@
 # Projeto Financial Insight - Controle Financeiro
 
 - Projeto realizado para o Projeto Integrador (ADS Unisal - 7o Trimestre).
-- O projeto consiste em criar um app utilizando conceitos de SPA e OOP com o objetivo de oferecer, para os usuários, uma plataforma para o controle de suas finanças, sendo possível incluir rendas e despesas e verificando o extrato da conta.
+- O projeto consiste em criar um app utilizando conceitos de SPA com o objetivo de oferecer, para os usuários, uma plataforma para o controle de suas finanças, sendo possível incluir rendas e despesas e verificando o extrato da conta.
 
 ## Para inicializar o app:
 
