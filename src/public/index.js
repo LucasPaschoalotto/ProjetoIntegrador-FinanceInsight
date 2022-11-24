@@ -322,6 +322,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
         });
 
+        //Método para exibr saldo
         const exibirExtrato = document.getElementById("exibirExtrato");
         exibirExtrato.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
