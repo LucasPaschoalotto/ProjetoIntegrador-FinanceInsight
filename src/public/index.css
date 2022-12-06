@@ -13,17 +13,36 @@ h1 {
     text-align: center;
 }
 
-#login {
+#login, #cadastroRendas, #cadastroDespesas, #tiposTransacoes {
     display: flex;
     justify-content: center;
     height: 3em;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: stretch;
-
 }
 
-#setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario {
+#rendas, #despesas {
+    display: flex;
+    justify-content: center;
+    height: 1em;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#rendas {
+    color: #226027;
+}
+
+#despesas {
+    color: #AB1B04;
+}
+
+#setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario, #setValorRenda, #setDescricaoRenda, #setValorDespesa, #setDescricaoDespesa, #inserirRenda, #exibirRendas, #inserirDespesa, #exibirDespesas, #transacaoRendas, #transacaoDespesas, #transacaoExtrato {
     margin: 5px;
     border-radius: 5px;
     border-color: #081CDF;
@@ -38,12 +57,24 @@ h1 {
     font-size: 20px;
 }
 
+#lista {
+    text-align: left;
+    color: #081CDF;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/*
 .tipoTransacao {
     text-align: center;
     color: #081CDF;
     font-weight: bold;
     align-items: center;
 }
+        <div class="tipoTransacao">
+        <label id="transacaoRenda"><input type="radio" name="transacao" value="renda"/>Rendas</label>
+        <label id="transacaoDespesa"><input type="radio" name="transacao" value="despesa"/>Despesas</label>
+        </div>
 
 input[type=radio]{
     align-items: center;
@@ -56,9 +87,10 @@ input[type=radio]{
 #transacaoDespesa{
     color: #AB1B04;
 }
+*/
 
 @media (max-width: 769px) {
-    #login{
+    #login {
         height: 17em;
         justify-content: center;
         flex-wrap: wrap;
@@ -66,7 +98,22 @@ input[type=radio]{
         align-content: center;
     }
 
-    #setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario {
+    #rendas, #despesas {
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;        
+    }
+
+    #cadastroRendas, #cadastroDespesas {
+        height: 14em;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    #setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario, #setValorRenda, #setDescricaoRenda, #setValorDespesa, #setDescricaoDespesa, #inserirRenda, #exibirRendas, #inserirDespesa, #exibirDespesas, #transacaoRendas, #transacaoDespesas, #transacaoExtrato {
         height: 40px;
         margin: 5px;
         border-radius: 5px;
