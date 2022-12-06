@@ -15,7 +15,7 @@ footer {
     display: flex;
     justify-content: space-around;
     background-color: #081CDF;
-    margin-top: 5em;
+    margin-top: 3em;
 }
 
 h1 {
@@ -85,6 +85,11 @@ h2 {
     font-size: 20px;
 }
 
+.msgRetorno {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 #graph{
     margin-left: 50px;
     width: 300px;
@@ -100,6 +105,14 @@ h2 {
         flex-wrap: wrap;
         flex-direction: column;
         align-content: center;
+    }
+
+    #tiposTransacoes {
+        height: 10em;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-content: center;        
     }
 
     #rendas, #despesas {

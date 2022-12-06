@@ -256,7 +256,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     };
                 };
 
-                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
+                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno' style='color: #226027'>Extrato das Rendas:</p>");
             });
         });
 
@@ -384,7 +384,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                     };
                 };
     
-                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
+                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno' style='color: #AB1B04'>Extrato das Despesas:</p>");
             });
         });
         
