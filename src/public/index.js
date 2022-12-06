@@ -97,8 +97,9 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
     const cpf = document.getElementById("setCpf").value;
     
     //Verifica se nome e email estão vazios
-    if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Nome, email e cpf precisam ser preenchidos</p>");
-    const logarUsuario = new Usuario(0, nome, email, cpf);
+    /*
+    if(!nome || !email || !cpf) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgLogar'>Nome, email e cpf precisam ser preenchidos</p>"); */
+    const logarUsuario = new Usuario(0, "Usuario", "1", "123123123"); // **HARDCODED** //
 
     //Verifica se usuário existe
     let verificaUsuarioLogin;
