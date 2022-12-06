@@ -1,5 +1,5 @@
 body {
-    font-family: 'Courier New', Courier, monospace;    
+    font-family: 'Courier New', Courier, monospace;
 }
 
 header {
@@ -7,9 +7,22 @@ header {
     justify-content: space-around;
 }
 
+footer {
+    display: flex;
+    justify-content: space-around;
+    background-color: #081CDF;
+    margin-top: 5em;
+}
+
 h1 {
     color: #081CDF;
     font-size: 4em;
+    text-align: center;
+}
+
+h2 {
+    color: #FFFFFF;
+    font-size: 2em;
     text-align: center;
 }
 
@@ -34,12 +47,16 @@ h1 {
     font-weight: bold;
 }
 
-#rendas {
+#rendas, #transacaoRendas {
     color: #226027;
 }
 
-#despesas {
+#despesas, #transacaoDespesas {
     color: #AB1B04;
+}
+
+#logarUsuario, #createUsuario, #inserirRenda, #exibirRendas, #inserirDespesa, #exibirDespesas, #transacaoRendas, #transacaoDespesas, #transacaoExtrato {
+    font-weight: bold;
 }
 
 #setNome, #setEmail, #setCpf, #logarUsuario, #createUsuario, #setValorRenda, #setDescricaoRenda, #setValorDespesa, #setDescricaoDespesa, #inserirRenda, #exibirRendas, #inserirDespesa, #exibirDespesas, #transacaoRendas, #transacaoDespesas, #transacaoExtrato {
