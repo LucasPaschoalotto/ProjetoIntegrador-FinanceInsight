@@ -93,31 +93,6 @@ h2 {
     border-radius: 50%    
 }
 
-/*
-.tipoTransacao {
-    text-align: center;
-    color: #081CDF;
-    font-weight: bold;
-    align-items: center;
-}
-        <div class="tipoTransacao">
-        <label id="transacaoRenda"><input type="radio" name="transacao" value="renda"/>Rendas</label>
-        <label id="transacaoDespesa"><input type="radio" name="transacao" value="despesa"/>Despesas</label>
-        </div>
-
-input[type=radio]{
-    align-items: center;
-}
-
-#transacaoRenda {
-    color: #226027;
-}
-
-#transacaoDespesa{
-    color: #AB1B04;
-}
-*/
-
 @media (max-width: 769px) {
     #login {
         height: 17em;
@@ -152,6 +127,4 @@ input[type=radio]{
         align-items: stretch;
 
     }
-
-
 }   
