@@ -133,214 +133,242 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             <button id="transacaoDespesas">Despesas</button>
             <button id="transacaoExtrato">Salvar e Exibir Extrato e Saldo</button>
         </p>
-        <p id="despesas" class="metodosDespesas">Despesas:</p>
-        <form id="cadastroDespesas" class="metodosDespesas">
-            <input id="setValorDespesa" placeholder="Valor da Despesa ex: 25.99"/>
-            <input id="setDescricaoDespesa" placeholder="Descrição"/>
-            <button id="inserirDespesa">Inserir Despesa</button>
-            <button id="exibirDespesas">Exibir Despesas</button>
-        </form>
         `);
-
         const startTransacoes = document.getElementById("tiposTransacoes");
-        const transactionRendas = document.getElementsByClassName("metodosRendas");
-        const textDespesas = document.getElementById("despesas");
-        const transactionDespesas = document.getElementById("cadastroDespesas");
-
 
         //Método para transações de RENDA
         const buttonRenda = document.getElementById("transacaoRendas");
         var btnRenda = 0;
-        if (btnRenda = 0) {
-            buttonRenda.addEventListener("click", () => {
-                btnRenda++;
-    
+
+        buttonRenda.addEventListener("click", () => {
+            if (btnRenda > 0) return;
+            btnRenda++;
+
+            //Verifica se há texto de despesa e remove
+            if (btnDespesa === 1) {
+                const textDespesas = document.getElementById("despesas");
+                const transactionDespesas = document.getElementById("cadastroDespesas");
                 textDespesas.remove();
                 transactionDespesas.remove();
+                btnDespesa--;
+            };
+            
+            //Inclui texto de Renda
+            startTransacoes.insertAdjacentHTML("afterend", `
+            <p id="rendas">Rendas:</p>
+            <form id="cadastroRendas">
+            <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
+            <input id="setDescricaoRenda" placeholder="Descrição"/>
+            <button id="inserirRenda">Inserir Renda</button>
+            <button id="exibirRendas">Exibir Rendas</button>
+            </form>
+            `);
+            
+            //Método para inserir RENDA
+            const setRenda = document.getElementById("inserirRenda");
+            setRenda.addEventListener("click", async(form) => {
+                //Previne comportamento da tag FORM
+                form.preventDefault();
     
-                startTransacoes.insertAdjacentHTML("afterend", `
-                <p id="rendas" class="metodosRendas">Rendas:</p>
-                <form id="cadastroRendas" class="metodosRendas">
-                    <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
-                    <input id="setDescricaoRenda" placeholder="Descrição"/>
-                    <button id="inserirRenda">Inserir Renda</button>
-                    <button id="exibirRendas">Exibir Rendas</button>
-                </form>
-                `);
-            })
-        }
-
-        //Método para inserir RENDA
-        const setRenda = document.getElementById("inserirRenda");
-        setRenda.addEventListener("click", async(form) => {
-            //Previne comportamento da tag FORM
-            form.preventDefault();
-
-            //Seleciona elementos HTML
-            const retornoUsuario = document.getElementById("retorno");
-            const campoRenda = document.querySelectorAll(".msgRenda");
-            const campoValorRenda = document.getElementById("setValorRenda");
-            const campoDescricaoRenda = document.getElementById("setDescricaoRenda")
-            const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const campoRetorno = document.querySelectorAll(".msgRetorno");
-
-            //Remove mensagem printada anteriormente
-            removeMsg(campoRenda);
-            removeMsg(campoDespesa);
-            removeMsg(campoRetorno);
-
-            //Armazena valores da renda
-            const id_usuario = usuarioLogado.id;
-            const valor = campoValorRenda.value;
-            const descricao = campoDescricaoRenda.value;
-            
-            //Verifica se dados estão preenchidos
-            if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor e Descrição precisam ser preenchidos</p>");
-            
-            //Verifica se valor da renda é um valor numérico
-            if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor da Renda precisa ser um valor numérico!</p>");
-
-            //Cria nova renda
-            const newRenda = new Renda(0, id_usuario, valor, descricao)
-
-            await fetch('/users/renda', {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id_usuario: newRenda.id_usuario, valor: newRenda.valor, descricao: newRenda.descricao})
+                //Seleciona elementos HTML
+                const retornoUsuario = document.getElementById("retorno");
+                const campoRenda = document.querySelectorAll(".msgRenda");
+                const campoValorRenda = document.getElementById("setValorRenda");
+                const campoDescricaoRenda = document.getElementById("setDescricaoRenda")
+                const campoDespesa = document.querySelectorAll(".msgDespesa")
+                const campoRetorno = document.querySelectorAll(".msgRetorno");
+    
+                //Remove mensagem printada anteriormente
+                removeMsg(campoRenda);
+                removeMsg(campoDespesa);
+                removeMsg(campoRetorno);
+    
+                //Armazena valores da renda
+                const id_usuario = usuarioLogado.id;
+                const valor = campoValorRenda.value;
+                const descricao = campoDescricaoRenda.value;
+                
+                //Verifica se dados estão preenchidos
+                if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor e Descrição precisam ser preenchidos</p>");
+                
+                //Verifica se valor da renda é um valor numérico
+                if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Valor da Renda precisa ser um valor numérico!</p>");
+    
+                //Cria nova renda
+                const newRenda = new Renda(0, id_usuario, valor, descricao)
+    
+                await fetch('/users/renda', {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id_usuario: newRenda.id_usuario, valor: newRenda.valor, descricao: newRenda.descricao})
+                });
+                retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Renda inserida com sucesso!</p>");
+                
+                campoValorRenda.value = "";
+                campoDescricaoRenda.value = "";
             });
-            retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRenda'>Renda inserida com sucesso!</p>");
-            
-            campoValorRenda.value = "";
-            campoDescricaoRenda.value = "";
-        });
 
-        //Método para inserir Despesas
-        const setDespesa = document.getElementById("inserirDespesa");
-        setDespesa.addEventListener("click", async(form) => {
-            //Previne comportamento da tag FORM
-            form.preventDefault();
+            //Método para exibir Rendas
+            const exibirRenda = document.getElementById("exibirRendas");
+            exibirRenda.addEventListener("click", async(form) => {
+                //Previne comportamento da tag FORM
+                form.preventDefault();   
 
-            //Seleciona elementos HTML
-            const retornoUsuario = document.getElementById("retorno");
-            const campoRenda = document.querySelectorAll(".msgRenda");
-            const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const campoValorDespesa = document.getElementById("setValorDespesa");
-            const campoDescricaoDespesa = document.getElementById("setDescricaoDespesa")
-            const campoRetorno = document.querySelectorAll(".msgRetorno");
+                //Seleciona elementos HTML
+                const campoRetorno = document.querySelectorAll(".msgRetorno");
+                const campoRenda = document.querySelectorAll(".msgRenda");
+                const campoDespesa = document.querySelectorAll(".msgDespesa")
+                const listaRetorno = document.getElementById("lista");
 
+                //Remove mensagem printada anteriormente
+                removeMsg(campoRenda);
+                removeMsg(campoDespesa);
+                removeMsg(campoRetorno);
 
-            //Remove mensagem printada anteriormente
-            removeMsg(campoRenda);
-            removeMsg(campoDespesa);
-            removeMsg(campoRetorno);
-
-            //Armazena valores da despesa
-            const id_usuario = usuarioLogado.id;
-            const valor = campoValorDespesa.value;
-            const descricao = campoDescricaoDespesa.value;
-            
-            //Verifica se dados estão preenchidos
-            if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor e Descrição precisam ser preenchidos</p>");
-            
-            //Verifica se valor da renda é um valor numérico
-            if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor da Despesa precisa ser um valor numérico!</p>");
-
-            //Cria nova renda
-            const newDespesa = new Despesa(0, id_usuario, valor, descricao)
-
-            await fetch('/users/despesa', {
-                method: 'POST',
-                headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id_usuario: newDespesa.id_usuario, valor: newDespesa.valor, descricao: newDespesa.descricao})
-            });
-            retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Despesa inserida com sucesso!</p>");
-            
-            campoValorDespesa.value = "";
-            campoDescricaoDespesa.value = "";
-        });
-
-        //Método para exibir Rendas
-        const exibirRenda = document.getElementById("exibirRendas");
-        exibirRenda.addEventListener("click", async(form) => {
-            //Previne comportamento da tag FORM
-            form.preventDefault();   
-
-            //Seleciona elementos HTML
-            const campoRetorno = document.querySelectorAll(".msgRetorno");
-            const campoRenda = document.querySelectorAll(".msgRenda");
-            const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaRetorno = document.getElementById("lista");
-
-            //Remove mensagem printada anteriormente
-            removeMsg(campoRenda);
-            removeMsg(campoDespesa);
-            removeMsg(campoRetorno);
-
-            //Retorna todas as rendas do DB
-            let verificaUsuarioRenda;
-            await fetch("/users/getAllRendas",{
-                method: "GET"
-                })
-                .then(response => response.json())          
-                .then(json => verificaUsuarioRenda = json);
-              
-            //Verifica, da lista retornada pelo DB, as rendas que possuem o id do usuário logado como FK
-            for(var i = 0; i < verificaUsuarioRenda.length; i++){
-                if(verificaUsuarioRenda[i].id_usuario === usuarioLogado.id){
-                    let data = new Date(verificaUsuarioRenda[i].datahora)
-                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
-                    //Printa a lista de Rendas do usuário
-                    listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                //Retorna todas as rendas do DB
+                let verificaUsuarioRenda;
+                await fetch("/users/getAllRendas",{
+                    method: "GET"
+                    })
+                    .then(response => response.json())          
+                    .then(json => verificaUsuarioRenda = json);
+                
+                //Verifica, da lista retornada pelo DB, as rendas que possuem o id do usuário logado como FK
+                for(var i = 0; i < verificaUsuarioRenda.length; i++){
+                    if(verificaUsuarioRenda[i].id_usuario === usuarioLogado.id){
+                        let data = new Date(verificaUsuarioRenda[i].datahora)
+                        let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
+                        //Printa a lista de Rendas do usuário
+                        listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioRenda[i].valor} - Descrição: ${verificaUsuarioRenda[i].descricao} - Data: ${dataFormatada}</li>`);
+                    };
                 };
+
+                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
+            });
+        });
+
+        //Método para transação de DESPESA
+        const buttonDespesa = document.getElementById("transacaoDespesas");
+        var btnDespesa = 0;
+        
+        buttonDespesa.addEventListener("click", () => {
+            if (btnDespesa > 0) return;
+            btnDespesa++;
+
+            //Verifica se há texto de renda e remove
+            if (btnRenda === 1) {
+                const textRendas = document.getElementById("rendas");
+                const transactionRendas = document.getElementById("cadastroRendas");
+                textRendas.remove();
+                transactionRendas.remove();
+                btnRenda--;
             };
 
-            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Rendas:</p>");
+            //Inclui texto de Despesas
+            startTransacoes.insertAdjacentHTML("afterend", `
+            <p id="despesas">Despesas:</p>
+            <form id="cadastroDespesas">
+                <input id="setValorDespesa" placeholder="Valor da Despesa ex: 25.99"/>
+                <input id="setDescricaoDespesa" placeholder="Descrição"/>
+                <button id="inserirDespesa">Inserir Despesa</button>
+                <button id="exibirDespesas">Exibir Despesas</button>
+            </form>
+            `);
+            
+            //Método para inserir Despesas
+            const setDespesa = document.getElementById("inserirDespesa");
+            setDespesa.addEventListener("click", async(form) => {
+                //Previne comportamento da tag FORM
+                form.preventDefault();
+    
+                //Seleciona elementos HTML
+                const retornoUsuario = document.getElementById("retorno");
+                const campoRenda = document.querySelectorAll(".msgRenda");
+                const campoDespesa = document.querySelectorAll(".msgDespesa")
+                const campoValorDespesa = document.getElementById("setValorDespesa");
+                const campoDescricaoDespesa = document.getElementById("setDescricaoDespesa")
+                const campoRetorno = document.querySelectorAll(".msgRetorno");
+    
+    
+                //Remove mensagem printada anteriormente
+                removeMsg(campoRenda);
+                removeMsg(campoDespesa);
+                removeMsg(campoRetorno);
+    
+                //Armazena valores da despesa
+                const id_usuario = usuarioLogado.id;
+                const valor = campoValorDespesa.value;
+                const descricao = campoDescricaoDespesa.value;
+                
+                //Verifica se dados estão preenchidos
+                if(!valor || !descricao) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor e Descrição precisam ser preenchidos</p>");
+                
+                //Verifica se valor da renda é um valor numérico
+                if(isNaN(valor) === true) return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Valor da Despesa precisa ser um valor numérico!</p>");
+    
+                //Cria nova renda
+                const newDespesa = new Despesa(0, id_usuario, valor, descricao)
+    
+                await fetch('/users/despesa', {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id_usuario: newDespesa.id_usuario, valor: newDespesa.valor, descricao: newDespesa.descricao})
+                });
+                retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgDespesa'>Despesa inserida com sucesso!</p>");
+                
+                campoValorDespesa.value = "";
+                campoDescricaoDespesa.value = "";
+            });
+    
+            
+            
+            //Método para exibir Despesas
+            const exibirDespesa = document.getElementById("exibirDespesas");
+            exibirDespesa.addEventListener("click", async(form) => {
+                //Previne comportamento da tag FORM
+                form.preventDefault();   
+    
+                //Seleciona elementos HTML
+                const campoRetorno = document.querySelectorAll(".msgRetorno");
+                const campoRenda = document.querySelectorAll(".msgRenda");
+                const campoDespesa = document.querySelectorAll(".msgDespesa")
+                const listaRetorno = document.getElementById("lista");
+    
+                //Remove mensagem printada anteriormente
+                removeMsg(campoRenda);
+                removeMsg(campoDespesa);
+                removeMsg(campoRetorno);
+    
+                //Retorna todas as despesas do DB
+                let verificaUsuarioDespesa;
+                await fetch("/users/getAllDespesas",{
+                    method: "GET"
+                    })
+                    .then(response => response.json())          
+                    .then(json => verificaUsuarioDespesa = json);
+    
+                //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
+                for(var i = 0; i < verificaUsuarioDespesa.length; i++){
+                    if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
+                        let data = new Date(verificaUsuarioDespesa[i].datahora)
+                        let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
+                        //Printa a lista de Despesa do usuário
+                        listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
+                    };
+                };
+    
+                return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
+            });
         });
         
-        //Método para exibir Despesas
-        const exibirDespesa = document.getElementById("exibirDespesas");
-        exibirDespesa.addEventListener("click", async(form) => {
-            //Previne comportamento da tag FORM
-            form.preventDefault();   
-
-            //Seleciona elementos HTML
-            const campoRetorno = document.querySelectorAll(".msgRetorno");
-            const campoRenda = document.querySelectorAll(".msgRenda");
-            const campoDespesa = document.querySelectorAll(".msgDespesa")
-            const listaRetorno = document.getElementById("lista");
-
-            //Remove mensagem printada anteriormente
-            removeMsg(campoRenda);
-            removeMsg(campoDespesa);
-            removeMsg(campoRetorno);
-
-            //Retorna todas as despesas do DB
-            let verificaUsuarioDespesa;
-            await fetch("/users/getAllDespesas",{
-                method: "GET"
-                })
-                .then(response => response.json())          
-                .then(json => verificaUsuarioDespesa = json);
-
-            //Verifica, da lista retornada pelo DB, as despesas que possuem o id do usuário logado como FK
-            for(var i = 0; i < verificaUsuarioDespesa.length; i++){
-                if(verificaUsuarioDespesa[i].id_usuario === usuarioLogado.id){
-                    let data = new Date(verificaUsuarioDespesa[i].datahora)
-                    let dataFormatada = ((data.getDate() + "-" + ((data.getMonth() + 1)) + "-" + data.getFullYear()));
-                    //Printa a lista de Despesa do usuário
-                    listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Valor: R$${verificaUsuarioDespesa[i].valor} - Descrição: ${verificaUsuarioDespesa[i].descricao} - Data: ${dataFormatada}</li>`);
-                };
-            };
-
-            return retornoUsuario.insertAdjacentHTML("afterbegin", "<p class='msgRetorno'>Extrato das Despesas:</p>");
-        });
-
+        
+        
         //Método para exibr saldo
         const exibirExtrato = document.getElementById("transacaoExtrato");
         exibirExtrato.addEventListener("click", async(form) => {
