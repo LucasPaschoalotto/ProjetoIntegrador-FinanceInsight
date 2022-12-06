@@ -136,6 +136,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         `);
         const startTransacoes = document.getElementById("tiposTransacoes");
 
+
         //Método para transações de RENDA
         const buttonRenda = document.getElementById("transacaoRendas");
         var btnRenda = 0;
@@ -153,6 +154,16 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 btnDespesa--;
             };
             
+            //Seleciona elementos HTML
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+
+            //Remove mensagem printada anteriormente
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
+
             //Inclui texto de Renda
             startTransacoes.insertAdjacentHTML("afterend", `
             <p id="rendas">Rendas:</p>
@@ -250,6 +261,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             });
         });
 
+
         //Método para transação de DESPESA
         const buttonDespesa = document.getElementById("transacaoDespesas");
         var btnDespesa = 0;
@@ -266,6 +278,16 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 transactionRendas.remove();
                 btnRenda--;
             };
+
+            //Seleciona elementos HTML
+            const campoRetorno = document.querySelectorAll(".msgRetorno");
+            const campoRenda = document.querySelectorAll(".msgRenda");
+            const campoDespesa = document.querySelectorAll(".msgDespesa")
+
+            //Remove mensagem printada anteriormente
+            removeMsg(campoRenda);
+            removeMsg(campoDespesa);
+            removeMsg(campoRetorno);
 
             //Inclui texto de Despesas
             startTransacoes.insertAdjacentHTML("afterend", `
@@ -368,10 +390,10 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         });
         
         
-        
+
         //Método para exibr saldo
-        const exibirExtrato = document.getElementById("transacaoExtrato");
-        exibirExtrato.addEventListener("click", async(form) => {
+        const buttonSaldo = document.getElementById("transacaoExtrato");
+        buttonSaldo.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
             form.preventDefault();   
 
@@ -385,6 +407,23 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             removeMsg(campoRenda);
             removeMsg(campoDespesa);
             removeMsg(campoRetorno);
+
+            //Verifica se há texto de renda e remove
+            if (btnRenda === 1) {
+                const textRendas = document.getElementById("rendas");
+                const transactionRendas = document.getElementById("cadastroRendas");
+                textRendas.remove();
+                transactionRendas.remove();
+                btnRenda--;
+            };
+            //Verifica se há texto de despesa e remove
+            if (btnDespesa === 1) {
+                const textDespesas = document.getElementById("despesas");
+                const transactionDespesas = document.getElementById("cadastroDespesas");
+                textDespesas.remove();
+                transactionDespesas.remove();
+                btnDespesa--;
+            };
 
             //Verifica se há conta Saldo pro usuário logado
             var newContaSaldo = new Saldo(0, usuarioLogado.id, 0, 0, 0)
