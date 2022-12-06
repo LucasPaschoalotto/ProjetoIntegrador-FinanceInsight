@@ -128,29 +128,47 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         const formStart = document.getElementById("start");
         formStart.insertAdjacentHTML("afterbegin", `
         <p id="msgLogin"> Usuário "${usuarioLogado.nome}" logado com sucesso! </p>
-        <div class="tipoTransacao">
-        <label id="transacaoRenda"><input type="radio" name="transacao" value="renda"/>Rendas</label>
-        <label id="transacaoDespesa"><input type="radio" name="transacao" value="despesa"/>Despesas</label>
-        </div>
-        <form>
-        <p>Rendas:</p>
-        <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
-        <input id="setDescricaoRenda" placeholder="Descrição"/>
-        <button id="inserirRenda">Inserir Renda</button>
-        <button id="exibirRendas">Exibir Rendas</button>
-        </form>
-        <form>
-            <p>Despesas:</p>
+        <p id="tiposTransacoes">
+            <button id="transacaoRendas">Rendas</button>
+            <button id="transacaoDespesas">Despesas</button>
+            <button id="transacaoExtrato">Salvar e Exibir Extrato e Saldo</button>
+        </p>
+        <p id="despesas" class="metodosDespesas">Despesas:</p>
+        <form id="cadastroDespesas" class="metodosDespesas">
             <input id="setValorDespesa" placeholder="Valor da Despesa ex: 25.99"/>
             <input id="setDescricaoDespesa" placeholder="Descrição"/>
             <button id="inserirDespesa">Inserir Despesa</button>
             <button id="exibirDespesas">Exibir Despesas</button>
         </form>
-        <p></p>
-        <button id="exibirExtrato">Salvar e Exibir Extrato e Saldo</button>
         `);
 
- 
+        const startTransacoes = document.getElementById("tiposTransacoes");
+        const transactionRendas = document.getElementsByClassName("metodosRendas");
+        const textDespesas = document.getElementById("despesas");
+        const transactionDespesas = document.getElementById("cadastroDespesas");
+
+
+        //Método para transações de RENDA
+        const buttonRenda = document.getElementById("transacaoRendas");
+        var btnRenda = 0;
+        if (btnRenda = 0) {
+            buttonRenda.addEventListener("click", () => {
+                btnRenda++;
+    
+                textDespesas.remove();
+                transactionDespesas.remove();
+    
+                startTransacoes.insertAdjacentHTML("afterend", `
+                <p id="rendas" class="metodosRendas">Rendas:</p>
+                <form id="cadastroRendas" class="metodosRendas">
+                    <input id="setValorRenda" placeholder="Valor da Renda ex: 25.99"/>
+                    <input id="setDescricaoRenda" placeholder="Descrição"/>
+                    <button id="inserirRenda">Inserir Renda</button>
+                    <button id="exibirRendas">Exibir Rendas</button>
+                </form>
+                `);
+            })
+        }
 
         //Método para inserir RENDA
         const setRenda = document.getElementById("inserirRenda");
@@ -324,7 +342,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
         });
 
         //Método para exibr saldo
-        const exibirExtrato = document.getElementById("exibirExtrato");
+        const exibirExtrato = document.getElementById("transacaoExtrato");
         exibirExtrato.addEventListener("click", async(form) => {
             //Previne comportamento da tag FORM
             form.preventDefault();   
