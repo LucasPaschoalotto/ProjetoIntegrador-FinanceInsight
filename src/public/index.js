@@ -512,7 +512,7 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
             newContaSaldo.saldo = newContaSaldo.renda - newContaSaldo.despesa;
 
             //Mostra o extrato pro usuário
-            listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno">Total de Rendas: R$${newContaSaldo.renda.toFixed(2)}</li><li class="msgRetorno">Total de Despesas: R$${newContaSaldo.despesa.toFixed(2)}</li><li class="msgRetorno">Saldo: R$${newContaSaldo.saldo.toFixed(2)}</li>`);
+            listaRetorno.insertAdjacentHTML("afterbegin", `<li class="msgRetorno" style="color: #278b30">Total de Rendas: R$${newContaSaldo.renda.toFixed(2)}</li><li class="msgRetorno" style="color: #d83218">Total de Despesas: R$${newContaSaldo.despesa.toFixed(2)}</li><li class="msgRetorno" style="color: #3144e9">Saldo: R$${newContaSaldo.saldo.toFixed(2)}</li>`);
 
             //Faz o Update dos valores no DB
             await fetch('/users/updateSaldo', {
@@ -523,12 +523,29 @@ buttonLogarUsuario.addEventListener("click", async(form) => {
                 },
                 body: JSON.stringify({id_usuario: newContaSaldo.id_usuario, renda: newContaSaldo.renda, despesa: newContaSaldo.despesa, saldo: newContaSaldo.saldo})
             });
-         
+
+            //Variáveis para calcular a % de cada item do gráfico
+            var calcDeg = newContaSaldo.despesa / newContaSaldo.renda;
+            
+            var degDespesa;
+            if (calcDeg >= 1) {
+                degDespesa = "360deg";
+            } else{
+                var degDespesa = String(calcDeg) * 360;
+                degDespesa = `${degDespesa}deg`;
+            }
+
+
+            var root = document.querySelector(":root");
+            root.style.setProperty('--deg1', degDespesa);
+            
+
+            //Imprime um gráfico para o usuário
+            listaRetorno.insertAdjacentHTML("afterend", `
+            <div id="graph" class="msgRetorno"></div>
+            `);
+                    
         });
-
-
-
-
 
     };
 });
